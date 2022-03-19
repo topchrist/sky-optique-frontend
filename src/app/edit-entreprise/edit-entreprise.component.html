@@ -1,0 +1,52 @@
+
+<div class="card col-lg-6 offset-lg-3">
+  <div *ngIf="isAddMode" class="card-header text-white bg-primary mb-3">
+    Ajouter une compagnie d'assurance
+  </div>
+  <div *ngIf="!isAddMode" class="card-header text-white bg-primary mb-3">
+    Modifier une compagnie d'assurance
+  </div>
+  <div class="card-body">
+    <form [formGroup]="entrepriseForm" (ngSubmit)="onSubmitForm()">
+
+      <div class="form-group">
+        <label for="nom">Nom*</label>
+        <input type="text" id="nom" class="form-control" formControlName="nom"  [ngClass]="{ 'is-invalid': submitted && f.nom.errors }" />
+        <div *ngIf="submitted && f.nom.errors" class="invalid-feedback">
+          <div *ngIf="f.nom.errors.required">Veuillez renseigner le nom</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }"/>
+        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+          <div *ngIf="f.email!=null && f.email.errors.email">Veuillez entrer une adresse email valide</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="adresse">Adresse</label>
+        <input type="text" id="adresse" class="form-control" formControlName="adresse" />
+      </div>
+      <div class="form-group">
+        <label for="tel1">Tel 1</label>
+        <input type="text" id="tel1" class="form-control" formControlName="tel1" />
+      </div>
+      <div class="form-group">
+        <label for="bp">BP</label>
+        <input type="text" id="bp" class="form-control" formControlName="bp" />
+      </div>
+      <div class="form-group">
+        <label for="rccm">Rccm</label>
+        <input type="text" id="rccm" class="form-control" formControlName="rccm" />
+      </div>
+
+      <br/>
+      <div >
+        <button class="btn btn-secondary col-md-5" type="reset" (click)="onReset()">Reset</button>
+        <button type="submit" class="btn btn-primary col-md-5 offset-md-2" >Enregistrer</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+

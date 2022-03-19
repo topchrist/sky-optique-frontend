@@ -1,0 +1,28 @@
+<div class="card">
+  <div class="card-header text-white bg-primary">Liste des agences</div>
+  <div class="card-body">
+    <table class="table table-striped table-sm">
+      <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Adresse</th>
+        <th>telephone 1</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let agence of agences">
+        <td>{{ agence.nom }}</td>
+        <td>{{ agence.adresse }}</td>
+        <td>{{ agence.tel1 }}</td>
+        <td style="white-space: nowrap">
+          <a routerLink="../update-agence/{{agence.id}}" class="btn btn-sm btn-primary mr-1">Modifier</a>
+          <button (click)="deleteAgence(agence.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="false">
+            <span>Supprimer</span>
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

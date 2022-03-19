@@ -1,0 +1,38 @@
+<div class="card">
+  <div class="card-header text-white bg-primary">Liste des verres</div>
+  <div class="card-body">
+    <table class="table table-striped table-sm">
+      <thead>
+      <tr>
+        <th>Catalogue</th>
+        <th>type</th>
+        <th>Sphere</th>
+        <th>Cylindre</th>
+        <th>Axe</th>
+        <th>Addition</th>
+        <th>Quantité</th>
+        <th>Prix de vente</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let lentille of stocks">
+        <td>{{ lentille.produit.catalogue?lentille.produit.catalogue.nom:'' }}</td>
+        <td>{{ lentille.produit.type }}</td>
+        <td>{{ lentille.produit.sphere }}</td>
+        <td>{{ lentille.produit.cylindre }}</td>
+        <td>{{ lentille.produit.axe }}</td>
+        <td>{{ lentille.produit.addition }}</td>
+        <td>{{ lentille.qte }}</td>
+        <td>{{ lentille.prixVente }}</td>
+        <td style="white-space: nowrap">
+          <a routerLink="../update-lentille/{{lentille.id}}" class="btn btn-sm btn-primary mr-1">Modifier</a>
+          <button (click)="deleteLentille(lentille.produit.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="false">
+            <span>Supprimer</span>
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

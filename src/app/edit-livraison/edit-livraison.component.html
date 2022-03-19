@@ -1,0 +1,141 @@
+<div class="row">
+  <div class="col-lg-6 offset-lg-3">
+
+    <form [formGroup]="livraisonForm" (ngSubmit)="onSubmitForm()">
+
+      <div class="form-group">
+        <mat-form-field appearance="fill">
+          <mat-label>Type de produit</mat-label>
+          <mat-select value="ALL" [formControl]="typeControl" (selectionChange)="onTypeChange($event)">
+            <mat-option value="ALL">Tous les produits</mat-option>
+            <mat-option value="L">Lentille</mat-option>
+            <mat-option value="M">Monture</mat-option>
+            <mat-option value="A">Accessoir</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-form-field class="example-full-width" appearance="fill"  >
+          <mat-label>Nom du produit</mat-label>
+          <input type="text" matInput [formControl]="produitControl" [matAutocomplete]="auto" >
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)='getProduit($event)' [displayWith]="displayFn">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+              {{option.libelle}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+
+      <div class="card" *ngIf="produit && produit.libelle">
+        <div class="card-body">
+          <table class="table table-striped table-sm" *ngIf="produit.discriminator=='L' ">
+            <tbody>
+            <tr>
+              <td>Type de produit</td>
+              <td >Lentille</td>
+            </tr>
+            <tr>
+              <td>Libellé</td>
+              <td >{{produit.libelle}}</td>
+            </tr>
+            <tr>
+              <td>sphere</td>
+              <td >{{produit.sphere}}</td>
+            </tr>
+            <tr>
+              <td>cylindre</td>
+              <td >{{produit.cylindre}}</td>
+            </tr>
+            <tr>
+              <td>axe</td>
+              <td >{{produit.axe}}</td>
+            </tr>
+            <tr>
+              <td>addition</td>
+              <td >{{produit.addition}}</td>
+            </tr>
+            </tbody>
+          </table>
+          <table class="table table-striped table-sm" *ngIf="produit.discriminator=='M' ">
+            <tbody>
+            <tr>
+              <td>Type de produit</td>
+              <td >Monture</td>
+            </tr>
+            <tr>
+              <td>Libellé</td>
+              <td >{{produit.libelle}}</td>
+            </tr>
+            <tr>
+              <td>model</td>
+              <td >{{produit.model}}</td>
+            </tr>
+            <tr>
+              <td>matiere</td>
+              <td >{{produit.matiere}}</td>
+            </tr>
+            <tr>
+              <td>genre</td>
+              <td >{{produit.genre}}</td>
+            </tr>
+            <tr>
+              <td>taille</td>
+              <td >{{produit.taille}}</td>
+            </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="prixAchat">Prix d'achat*</label>
+        <input type="number" id="prixAchat" class="form-control" formControlName="prixAchat"  [ngClass]="{ 'is-invalid': submitted && f.prixAchat.errors }" />
+        <div *ngIf="submitted && f.prixAchat.errors" class="invalid-feedback">
+          <div *ngIf="f.prixAchat.errors.required">Veuillez renseigner le prix d'achat</div>
+          <div *ngIf="f.prixAchat.errors.min">La valeur doit être superieur ou égal à 0</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="qte">Quantité*</label>
+        <input type="number" id="qte" class="form-control" formControlName="qte"  [ngClass]="{ 'is-invalid': submitted && f.qte.errors }" />
+        <div *ngIf="submitted && f.qte.errors" class="invalid-feedback">
+          <div *ngIf="f.qte.errors.required">Veuillez renseigner la quantité</div>
+          <div *ngIf="f.qte.errors.min">La valeur doit être superieur ou égal à 1</div>
+        </div>
+      </div>
+
+<!--
+
+      <div class="form-group">
+        <mat-form-field appearance="fill">
+          <mat-label>Prix d'achat</mat-label>
+          <input type="number" class="form-control" matInput placeholder="Entrer le prix d'achat" formControlName="prixAchat">
+          <mat-error *ngIf="livraisonForm.get('prixAchat').invalid" >{{getErrorMessage('prixAchat')}}</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-form-field appearance="fill">
+          <mat-label>Quantité</mat-label>
+          <input type="number" class="form-control" matInput placeholder="Entrer le prix d'achat" formControlName="qte">
+          <mat-error *ngIf="livraisonForm.get('qte').invalid" >{{getErrorMessage('qte')}}</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-form-field appearance="fill">
+          <mat-label>Prix de vente</mat-label>
+          <input type="number" class="form-control" matInput placeholder="Entrer le prix de vente" formControlName="prixVente">
+          <mat-error *ngIf="livraisonForm.get('prixVente').invalid" >{{getErrorMessage('prixVente')}}</mat-error>
+        </mat-form-field>
+      </div>
+-->
+
+      <div >
+        <button class="btn btn-secondary col-md-5" type="reset" (click)="onReset()">Cancel</button>
+        <button type="submit" class="btn btn-primary col-md-5 offset-md-2" >Ajouter</button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

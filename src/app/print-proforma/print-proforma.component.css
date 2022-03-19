@@ -1,0 +1,88 @@
+#facture{
+  width: 900px;
+  height: 1100px;
+  alignment: center;
+  border: solid;
+  /*padding: 20px;*/
+}
+
+.footer{
+  height: 110px;
+  font-size: 0.9em;
+  background-color: blueviolet;
+  color: white;
+  padding-right: 30px;
+  padding-left: 30px;
+  margin-top: 347px;
+  width: 100%;
+}
+
+#titre, #verre, #monture, #opticien{
+  text-decoration: underline;
+  font-weight: bold;
+}
+#titre{
+  margin-left: 30px;
+}
+#contenu{
+  padding-left: 70px;
+  padding-right: 70px;
+  width: 100%;
+ }
+#numero{
+  display: inline-block;
+  width: 50%;
+  font-weight: bold;
+  font-size: 2.3em;
+}
+#datejour{
+  width: 50%;
+  text-align: right;
+  display: inline-block;
+  font-weight: bold;
+}
+
+#div_prescription{
+  display: inline-block;
+  width: 50%;
+}
+#div_patien{
+  display: inline-block;
+  width: 50%;
+  border: 1px solid;
+}
+#div_recap{
+  width: 100%;
+  margin-left: 50%;
+}
+#div_commande{
+  border: 1px solid;
+}
+
+#nomprescripteur, #nompatient, #montant, .bold{
+  font-weight: bold;
+}
+
+#montant{
+  font-style: italic;
+}
+
+.right{
+  text-align: right;
+}
+.left{
+  text-align: left;
+}
+#opticien{
+  text-align: right;
+  margin-right: 50px;
+}
+
+#tablefooter{
+  width: 100%;
+  margin: auto;
+}
+
+td{
+  vertical-align: center;
+}

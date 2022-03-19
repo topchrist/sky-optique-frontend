@@ -1,0 +1,34 @@
+<div class="card">
+  <div class="card-header text-white bg-primary">Liste des fournisseurs</div>
+  <div class="card-body">
+    <table class="table table-striped table-sm">
+      <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Email</th>
+        <th>Adresse</th>
+        <th>Boite postale</th>
+        <th>telephone 1</th>
+        <th>telephone 2</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let fournisseur of fournisseurs">
+        <td>{{ fournisseur.nom }}</td>
+        <td>{{ fournisseur.email }}</td>
+        <td>{{ fournisseur.adresse }}</td>
+        <td>{{ fournisseur.bp }}</td>
+        <td>{{ fournisseur.tel1 }}</td>
+        <td>{{ fournisseur.tel2 }}</td>
+        <td style="white-space: nowrap">
+          <a routerLink="../update-fournisseur/{{fournisseur.id}}" class="btn btn-sm btn-primary mr-1">Modifier</a>
+          <button (click)="deleteFournisseur(fournisseur.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="false">
+            <span>Supprimer</span>
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

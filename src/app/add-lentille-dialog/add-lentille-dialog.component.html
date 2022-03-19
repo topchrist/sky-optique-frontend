@@ -1,0 +1,65 @@
+<h2 mat-dialog-title>Ajouter un verre</h2>
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="lentilleForm" (ngSubmit)="onSubmitForm()">
+
+    <div class="form-group" >
+      <mat-form-field class="example-full-width" appearance="outline"  >
+        <mat-label>Catalogue</mat-label>
+        <input type="text" matInput formControlName="catalogue" [matAutocomplete]="catalogue" #autoCompleteCatalogue>
+        <mat-error *ngIf="lentilleForm.get('catalogue').invalid" >Selectionnez ou éditez un catalogue</mat-error>
+        <mat-autocomplete #catalogue="matAutocomplete" (optionSelected)='getCatalogue($event)' [displayWith]="displayCatalogue">
+          <mat-option *ngFor="let option of filteredCatalogue | async" [value]="option">
+            {{option.nom}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+
+    <div class="form-group">
+      <label for="sphere">
+        Sphere
+      </label>
+      <input type="number" id="sphere" class="form-control" formControlName="sphere"  [ngClass]="{ 'is-invalid': submitted && f.sphere.errors }"/>
+      <div *ngIf="submitted && f.sphere.errors" class="invalid-feedback">
+        <div *ngIf="f.sphere.errors.required">Veuillez renseigner la valeur</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="cylindre">
+        Cylindre
+      </label>
+      <input type="number" id="cylindre" class="form-control" formControlName="cylindre"  [ngClass]="{ 'is-invalid': submitted && f.cylindre.errors }"/>
+      <div *ngIf="submitted && f.cylindre.errors" class="invalid-feedback">
+        <div *ngIf="f.cylindre.errors.required">Veuillez renseigner la valeur</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="axe">
+        Axe
+      </label>
+      <input type="number" id="axe" class="form-control" formControlName="axe" />
+    </div>
+    <div class="form-group">
+      <label for="addition">
+        Addition
+      </label>
+      <input type="number" id="addition" class="form-control" formControlName="addition" />
+    </div>
+    <br/>
+    <div class="form-group">
+      <label for="prixVente">Prix de vente*</label>
+      <input type="text" id="prixVente" class="form-control" formControlName="prixVente" [ngClass]="{ 'is-invalid': submitted && f.prixVente.errors }" />
+      <div *ngIf="submitted && f.prixVente.errors" class="invalid-feedback">
+        <div *ngIf="f.prixVente.errors.required">Veuillez renseigner le prix de vente</div>
+        <div *ngIf="f.prixVente.errors.min">Le prix vente doit être supérieur ou égal à 0</div>
+      </div>
+    </div>
+    <br/>
+    <div >
+      <button class="btn btn-secondary col-md-5" type="reset" (click)="onReset()">Reset</button>
+      <button type="submit" class="btn btn-primary col-md-5 offset-md-2" >Enregistrer</button>
+    </div>
+
+  </form>
+</mat-dialog-content>
+

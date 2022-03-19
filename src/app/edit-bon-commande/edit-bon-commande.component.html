@@ -1,0 +1,168 @@
+<div class="row">
+
+  <div class="col-lg-4">
+
+    <form [formGroup]="commandeForm" (ngSubmit)="onSubmitForm(commandeForm.value)">
+
+      <div class="form-group">
+        <mat-form-field appearance="fill">
+          <mat-label>Type de produit</mat-label>
+          <mat-select value="ALL" [formControl]="typeControl" (selectionChange)="onTypeChange($event)">
+            <mat-option value="ALL">Tous les produits</mat-option>
+            <mat-option value="L">Lentille</mat-option>
+            <mat-option value="M">Monture</mat-option>
+            <mat-option value="A">Accessoir</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-form-field class="example-full-width" appearance="fill"  >
+          <mat-label>Nom du produit</mat-label>
+          <input type="text" matInput [formControl]="produitControl" [matAutocomplete]="auto" >
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)='getProduit($event)' [displayWith]="displayFn">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+              {{option.libelle}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+
+      <div class="card" *ngIf="produit && produit.libelle">
+        <div class="card-body">
+          <table class="table table-striped table-sm" *ngIf="produit.discriminator=='L' ">
+            <tbody>
+            <tr>
+              <td>Type de produit</td>
+              <td >Lentille</td>
+            </tr>
+            <tr>
+              <td>Libellé</td>
+              <td >{{produit.libelle}}</td>
+            </tr>
+            <tr>
+              <td>sphere</td>
+              <td >{{produit.sphere}}</td>
+            </tr>
+            <tr>
+              <td>cylindre</td>
+              <td >{{produit.cylindre}}</td>
+            </tr>
+            <tr>
+              <td>axe</td>
+              <td >{{produit.axe}}</td>
+            </tr>
+            <tr>
+              <td>addition</td>
+              <td >{{produit.addition}}</td>
+            </tr>
+            </tbody>
+          </table>
+          <table class="table table-striped table-sm" *ngIf="produit.discriminator=='M' ">
+            <tbody>
+            <tr>
+              <td>Type de produit</td>
+              <td >Monture</td>
+            </tr>
+            <tr>
+              <td>Libellé</td>
+              <td >{{produit.libelle}}</td>
+            </tr>
+            <tr>
+              <td>model</td>
+              <td >{{produit.model}}</td>
+            </tr>
+            <tr>
+              <td>matiere</td>
+              <td >{{produit.matiere}}</td>
+            </tr>
+            <tr>
+              <td>genre</td>
+              <td >{{produit.genre}}</td>
+            </tr>
+            <tr>
+              <td>taille</td>
+              <td >{{produit.taille}}</td>
+            </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+
+      <div class="form-group">
+        <mat-form-field appearance="fill">
+          <mat-label>Quantité</mat-label>
+          <input type="number" class="form-control" matInput placeholder="Entrer le prix d'achat" formControlName="qte">
+          <mat-error *ngIf="commandeForm.get('qte').invalid" >{{getErrorMessage('qte')}}</mat-error>
+        </mat-form-field>
+      </div>
+
+      <button type="submit" class="btn btn-primary" [disabled]="!produit || commandeForm.invalid">Ajouter</button>
+
+    </form>
+
+  </div>
+
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-header text-white bg-primary">
+        Liste des commandes
+      </div>
+      <div class="card-body">
+        <table class="table ">
+          <thead>
+          <tr>
+            <th>Type de Produit</th>
+            <th>Nom de Produit</th>
+            <th>Quantité</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let com of listCommande; let i = index">
+            <td *ngIf="com.produit.discriminator== 'L'">Lentille</td>
+            <td *ngIf="com.produit.discriminator== 'M'">Monture</td>
+            <td>{{ com.produit.libelle }}</td>
+            <td>{{ com.qte }}</td>
+            <td style="white-space: nowrap">
+              <button (click)="removeProduit(i)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="false">
+                <span>Retirer</span>
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <form #BonCommandeForm="ngForm" (ngSubmit)="onSubmit(BonCommandeForm)" >
+
+      <div class="form-group">
+        <mat-form-field class="example-full-width" appearance="fill"  >
+          <mat-label>Fournisseur</mat-label>
+          <input type="text" matInput [formControl]="fournisseurControl" [matAutocomplete]="auto1" #autoCompleteInput>
+          <mat-autocomplete #auto1="matAutocomplete" (optionSelected)='getFournisseur($event)' [displayWith]="displayFournisseur">
+            <mat-option *ngFor="let option of filteredFournisseurs | async" [value]="option">
+              {{option.nom}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+
+      <div class="form-group">
+        <button [disabled]="BonCommandeForm.invalid || !(listCommande && listCommande.length>0)" class="btn btn-primary" type="submit">
+          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+          Enregistrer
+        </button>
+        <a *ngIf="!isAddMode" routerLink="../bonCommandes" class="btn btn-link">Annuler</a>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+
+
+
+
+

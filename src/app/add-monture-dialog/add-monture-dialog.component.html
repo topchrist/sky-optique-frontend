@@ -1,0 +1,91 @@
+<h2 mat-dialog-title>Ajouter monture</h2>
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="montureForm" (ngSubmit)="onSubmitForm()">
+
+    <div class="form-group">
+      <label for="monture_ref">Reference*</label>
+      <input type="text" id="monture_ref" class="form-control" formControlName="reference" [ngClass]="{ 'is-invalid': submitted && f.reference.errors }" />
+      <div *ngIf="submitted && f.reference.errors" class="invalid-feedback">
+        <div *ngIf="f.reference.errors.required">Veuillez renseigner le nom de la reference</div>
+      </div>
+    </div>
+    <br/>
+    <div class="form-group" >
+      <mat-form-field class="example-full-width" appearance="outline"  >
+        <mat-label>Marque</mat-label>
+        <input type="text" matInput [formControl]="marqueControl" [matAutocomplete]="auto2" #autoCompleteMarque>
+        <mat-autocomplete #auto2="matAutocomplete" (optionSelected)='getMarque($event)' [displayWith]="displayMarque">
+          <mat-option *ngFor="let option of filteredMarque | async" [value]="option">
+            {{option.nom}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <label for="modele">
+        Modele
+      </label>
+      <input type="text" id="modele" class="form-control" formControlName="modele"/>
+    </div>
+    <br/>
+    <div class="form-group">
+      <label for="matiere">Matiere</label>
+      <select id="matiere" class="form-select" formControlName="matiere">
+        <option value="" ></option>
+        <option value="Plastique" >Plastique</option>
+        <option value="Métallique" >Métallique</option>
+        <option value="Métal-Plastique" >Métal-Plastique</option>
+      </select>
+    </div>
+    <br/>
+    <div class="form-group">
+      <label for="genre">Genre</label>
+      <select id="genre" class="form-select" formControlName="genre">
+        <option value="" ></option>
+        <option value="Mixte" >Mixte</option>
+        <option value="Homme" >Homme</option>
+        <option value="Femme" >Femme</option>
+      </select>
+    </div>
+    <br/>
+    <div class="form-group">
+      <label for="taille">
+        Taille
+      </label>
+      <input type="text" id="taille" class="form-control" formControlName="taille" />
+    </div>
+    <br/>
+    <div class="form-group">
+      <label for="forme">Forme</label>
+      <select id="forme" class="form-select" formControlName="forme">
+        <option value="" ></option>
+        <option value="Ovale" >Ovale</option>
+        <option value="Rectangulaire" >Rectangulaire</option>
+        <option value="Ronde" >Ronde</option>
+        <option value="Papillon" >Papillon</option>
+        <option value="Wayfarer" >Wayfarer</option>
+        <option value="Pilote" >Pilote</option>
+      </select>
+    </div>
+    <br/>
+    <div class="form-group">
+      <label for="prixVente">Prix de vente*</label>
+      <input type="text" id="prixVente" class="form-control" formControlName="prixVente" [ngClass]="{ 'is-invalid': submitted && f.prixVente.errors }" />
+      <div *ngIf="submitted && f.qte.errors" class="invalid-feedback">
+        <div *ngIf="f.prixVente.errors.required">Veuillez renseigner le prix de vente</div>
+        <div *ngIf="f.prixVente.errors.min">Le prix vente doit être supérieur ou égal à 0</div>
+      </div>
+    </div>
+    <br/>
+    <div class="row" >
+      <button class="btn btn-secondary" type="reset" (click)="onReset()">Reset</button>
+    </div>
+    <br/>
+    <div class="row" >
+      <button type="submit" class="btn btn-primary" >Enregistrer</button>
+    </div>
+
+
+  </form>
+</mat-dialog-content>
+

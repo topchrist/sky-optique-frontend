@@ -1,0 +1,32 @@
+
+<div class="card col-lg-6 offset-lg-3">
+  <div *ngIf="isAddMode" class="card-header text-white bg-primary mb-3">
+    Ajouter une marque
+  </div>
+  <div *ngIf="!isAddMode" class="card-header text-white bg-primary mb-3">
+    Modifier marque
+  </div>
+  <div class="card-body">
+
+    <form [formGroup]="marqueForm" (ngSubmit)="onSubmitForm()">
+
+      <div class="form-group">
+        <label for="nom">Nom de la marque*</label>
+        <input type="text" id="nom" class="form-control" formControlName="nom"  [ngClass]="{ 'is-invalid': submitted && f.nom.errors }" />
+        <div *ngIf="submitted && f.nom.errors" class="invalid-feedback">
+          <div *ngIf="f.nom.errors.required">Veuillez renseigner le nom de la marque</div>
+        </div>
+      </div>
+
+      <br/>
+      <div >
+        <button class="btn btn-secondary col-md-5" type="reset" (click)="onReset()">Reset</button>
+        <button type="submit" class="btn btn-primary col-md-5 offset-md-2" >Enregistrer</button>
+      </div>
+
+    </form>
+
+
+  </div>
+</div>
+

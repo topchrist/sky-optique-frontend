@@ -1,0 +1,24 @@
+<div class="card">
+  <div class="card-header text-white bg-primary">Liste des catalogues</div>
+  <div class="card-body">
+    <table class="table table-striped table-sm">
+      <thead>
+      <tr>
+        <th>Nom</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let catalogue of catalogues">
+        <td>{{ catalogue.nom }}</td>
+        <td style="white-space: nowrap">
+          <a routerLink="../update-catalogue/{{catalogue.id}}" class="btn btn-sm btn-primary mr-1">Modifier</a>
+          <button (click)="deleteCatalogue(catalogue.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="false">
+            <span>Supprimer</span>
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

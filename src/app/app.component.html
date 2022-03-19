@@ -1,0 +1,64 @@
+<nav class="navbar navbar-expand-lg bg-primary navbar-dark" *ngIf="authentificationService.isUserLoggedIn()">
+  <a class="navbar-brand" href="#">Sky-Optique</a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMonture" role="button" data-bs-toggle="dropdown" aria-expanded="false">Produits</a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" routerLink="montures">Liste des montures</a></li>
+            <li><a class="dropdown-item" routerLink="add-monture">Ajouter une monture</a></li>
+            <li><a class="dropdown-item" routerLink="marques">Liste des marques</a></li>
+            <li><a class="dropdown-item" routerLink="add-marque">Ajouter une marque</a></li>
+            <li><a class="dropdown-item" routerLink="catalogues">Liste des catalogues</a></li>
+            <li><a class="dropdown-item" routerLink="add-catalogue">Ajouter un catalogue</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownEntreprise" role="button" data-bs-toggle="dropdown" aria-expanded="false">Assurances</a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" routerLink="entreprises">Liste des compagnies d'assurances</a></li>
+            <li><a class="dropdown-item" routerLink="add-entreprise">Ajouter compagnie d'assurance</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPatient" role="button" data-bs-toggle="dropdown" aria-expanded="false">Patients</a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" routerLink="personnes">Liste des patients</a></li>
+            <li><a class="dropdown-item" routerLink="add-personne">Ajouter un patient</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownFacture" role="button" data-bs-toggle="dropdown" aria-expanded="false">Facturations</a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" routerLink="add-proforma">Proforma</a></li>
+            <li><a class="dropdown-item" routerLink="add-facture">Nouvelle vente</a></li>
+            <li><a class="dropdown-item" routerLink="factures">Liste factures Client</a></li>
+            <li><a class="dropdown-item" routerLink="proformas">Liste Proforma</a></li>
+            <li><a class="dropdown-item" routerLink="add-bordereau">Editer un Bordereau</a></li>
+            <li><a class="dropdown-item" routerLink="Bordereaux">Liste des Bordereaux</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUtilisateur" role="button" data-bs-toggle="dropdown" aria-expanded="false">Utilisateurs</a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" routerLink="utilisateurs">Liste des Utilisateurs</a></li>
+            <li><a class="dropdown-item" routerLink="add-utilisateur">Nouvel utilisateur</a></li>
+          </ul>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <app-logout></app-logout>
+      </form>
+    </div>
+</nav>
+
+
+<div class="container-fluid">
+
+  <router-outlet></router-outlet>
+
+</div>
+

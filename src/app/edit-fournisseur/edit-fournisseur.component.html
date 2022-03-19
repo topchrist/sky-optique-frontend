@@ -1,0 +1,54 @@
+
+<div class="card col-lg-6 offset-lg-3">
+  <div *ngIf="isAddMode" class="card-header text-white bg-primary mb-3">
+    Ajouter un fournisseur
+  </div>
+  <div *ngIf="!isAddMode" class="card-header text-white bg-primary mb-3">
+    Modifier fournisseur
+  </div>
+  <div class="card-body">
+    <form [formGroup]="fournisseurForm" (ngSubmit)="onSubmitForm()">
+
+      <div class="form-group">
+        <label for="nom">Nom du fournisseur*</label>
+        <input type="text" id="nom" class="form-control" formControlName = "nom" [ngClass]="{ 'is-invalid': submitted && f.nom.errors }" />
+        <div *ngIf="submitted && f.nom.errors" class="invalid-feedback">
+          <div *ngIf="f.nom.errors.required">Veuillez renseigner le nom du fournisseur</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="adresse">Adresse</label>
+        <input type="text" id="adresse" class="form-control" formControlName="adresse" [(ngModel)] = "fournisseur.adresse" >
+      </div>
+      <div class="form-group">
+        <label for="email">Email*</label>
+        <input type="email" id="email" class="form-control" formControlName="email" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+          <div *ngIf="f.email.errors.required">Veuillez renseigner l'adresse email'</div>
+          <div *ngIf="f.email.errors.email">Veuillez renseigner une adresse email valide</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="tel1">Téléphone 1*</label>
+        <input type="text" id="tel1" class="form-control" formControlName="tel1" [ngClass]="{ 'is-invalid': submitted && f.tel1.errors }" />
+        <div *ngIf="submitted && f.tel1.errors" class="invalid-feedback">
+          <div *ngIf="f.tel1.errors.required">Veuillez renseigner le télephone</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="tel2">Téléphone 2</label>
+        <input type="text" id="tel2" class="form-control" formControlName="tel2" />
+      </div>
+      <div class="form-group">
+        <label for="bp">Boite postale</label>
+        <input type="text" id="bp" class="form-control" formControlName="bp" />
+      </div>
+      <br/>
+      <div >
+        <button class="btn btn-secondary col-md-5" type="reset" (click)="onReset()">Reset</button>
+        <button type="submit" class="btn btn-primary col-md-5 offset-md-2" >Enregistrer</button>
+      </div>
+    </form>
+  </div>
+</div>
+

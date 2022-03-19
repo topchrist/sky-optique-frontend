@@ -1,0 +1,38 @@
+<div class="card">
+  <div class="card-header text-white bg-primary">Liste des montures</div>
+  <div class="card-body">
+    <table class="table table-striped table-sm">
+      <thead>
+      <tr>
+        <th>Reference</th>
+        <th>Marque</th>
+        <th>Model</th>
+        <th>Matiere</th>
+        <th>Genre</th>
+        <th>Taille</th>
+        <th>Quantité</th>
+        <th>Prix de vente</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let monture of stocks">
+        <td>{{ monture.produit.reference }}</td>
+        <td><span *ngIf="monture.produit.marque">{{ monture.produit.marque.nom }}</span></td>
+        <td>{{ monture.produit.modele }}</td>
+        <td>{{ monture.produit.matiere }}</td>
+        <td>{{ monture.produit.genre }}</td>
+        <td>{{ monture.produit.taille }}</td>
+        <td>{{ monture.qte }}</td>
+        <td>{{ monture.prixVente }}</td>
+        <td style="white-space: nowrap">
+          <a routerLink="../update-monture/{{monture.id}}" class="btn btn-sm btn-primary mr-1">Modifier</a>
+          <button (click)="deleteMonture(monture.produit.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="false">
+            <span>Supprimer</span>
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

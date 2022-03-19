@@ -1,0 +1,49 @@
+#facture{
+  width: 900px;
+  alignment: center;
+  border: solid;
+  padding: 20px;
+}
+
+.footer{
+  height: 110px;
+  background-color: blueviolet;
+  color: white;
+}
+
+#titre{
+  text-decoration: underline;
+  font-weight: bold;
+}
+#contenu{
+  padding-left: 30px;
+  padding-right: 30px;
+  width: 100%;
+  align-content: first;
+}
+#numero{
+  display: inline-block;
+  width: 400px;
+  font-weight: bold;
+  font-size: 2.3em;
+}
+#datejour{
+  width: 385px;
+  text-align: right;
+  display: inline-block;
+  font-weight: bold;
+}
+
+#div_prescription{
+  display: inline-block;
+  width: 400px;
+}
+#div_patien{
+  display: inline-block;
+  width: 385px;
+  border: 1px solid;
+}
+
+#div_commande{
+  border: 1px solid;
+}

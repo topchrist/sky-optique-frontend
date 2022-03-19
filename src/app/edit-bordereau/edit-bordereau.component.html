@@ -1,0 +1,76 @@
+
+<div class="row" >
+  <div class="col-lg-3">
+    <mat-form-field appearance="outline">
+      <mat-label>Assurance</mat-label>
+      <mat-select [(ngModel)]="idAssurance" (selectionChange)="onFIlterListe()">
+        <mat-option value='' ></mat-option>
+        <mat-option *ngFor="let assurance of listAssurances" [value]="assurance.id" >{{ assurance.nom }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="col-lg-3">
+    <mat-form-field appearance="outline">
+      <mat-label>Date de debut</mat-label>
+      <input type="date" class="form-control" matInput name="dateDebut" [(ngModel)] = "dateDebut" (change)="onFIlterListe()">
+    </mat-form-field>
+  </div>
+  <div class="col-lg-3">
+    <mat-form-field appearance="outline">
+      <mat-label>Date de Fin</mat-label>
+      <input type="date" class="form-control" matInput name="dateDebut" [(ngModel)] = "dateFin" (change)="onFIlterListe()">
+    </mat-form-field>
+  </div>
+</div>
+
+<div class="card">
+
+  <div class="card-body">
+    <div class="row">
+      <div class="col-3">
+
+      </div>
+    </div>
+    <table class="table table-striped table-sm">
+      <thead>
+        <tr>
+          <th><input type="checkbox" [checked]="isAllCheckBoxChecked()" (change)="checkAllCheckBox($event)"></th>
+          <th>Date</th>
+          <th>Numero</th>
+          <th>Nom patient</th>
+          <th>Prénom patient</th>
+          <th>Montant</th>
+          <th>Prise en charge</th>
+          <th>Franchise</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let facture of filtredFactures; let i=index; let odd = odd" [ngClass]="odd ? 'odd_col' : 'even_col'">
+          <td ><input type="checkbox" value="{{facture.id}}" [(ngModel)]="filtredFactures[i].checked"></td>
+          <td>{{ onDateFormat(facture.createAt)}}</td>
+          <td>{{ facture.numero}}</td>
+          <td>{{ facture.patient.nom }}</td>
+          <td>{{ facture.patient.prenom }}</td>
+          <td>{{ formatMillier(facture.couvertures[0].priseEnCharge+facture.couvertures[0].franchise) }}</td>
+          <td>{{ formatMillier(facture.couvertures[0].priseEnCharge) }}</td>
+          <td>{{ formatMillier(facture.couvertures[0].franchise) }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+<form #bordereauForm="ngForm" (ngSubmit)="onSubmit(bordereauForm)" >
+
+
+  <br/><br/>
+  <div class="form-group">
+    <button [disabled]="!isSelected" class="btn btn-primary col-md-4 offset-md-4" type="submit">
+      <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+      Save
+    </button>
+
+  </div>
+
+</form>

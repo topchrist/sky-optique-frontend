@@ -1,0 +1,35 @@
+
+<div class="card col-lg-6 offset-lg-3">
+  <div *ngIf="isAddMode" class="card-header text-white bg-primary mb-3">
+    Ajouter une agence
+  </div>
+  <div *ngIf="!isAddMode" class="card-header text-white bg-primary mb-3">
+    Modifier agence
+  </div>
+  <div class="card-body">
+    <form [formGroup]="agenceForm" (ngSubmit)="onSubmitForm()">
+
+      <div class="form-group">
+        <label for="nom">Nom l'agence*</label>
+        <input type="text" id="nom" class="form-control" formControlName = "nom" [ngClass]="{ 'is-invalid': submitted && f.nom.errors }" />
+        <div *ngIf="submitted && f.nom.errors" class="invalid-feedback">
+          <div *ngIf="f.nom.errors.required">Veuillez renseigner le nom de l'agence</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="adresse">Adresse</label>
+        <input type="text" id="adresse" class="form-control" formControlName="adresse" >
+      </div>
+      <div class="form-group">
+        <label for="tel1">Téléphone 1*</label>
+        <input type="text" id="tel1" class="form-control" formControlName="tel1"   />
+      </div>
+      <br/>
+      <div >
+        <button class="btn btn-secondary col-md-5" type="reset" (click)="onReset()">Reset</button>
+        <button type="submit" class="btn btn-primary col-md-5 offset-md-2" >Enregistrer</button>
+      </div>
+    </form>
+  </div>
+</div>
+
