@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { UtilisateurModel } from '../models/utilisateur.model';
 import { Subject } from 'rxjs';
 import {HttpClient} from "@angular/common/http";
+import {UrlService} from "./url.service";
 
 @Injectable({
   providedIn: 'root'
@@ -20,11 +21,15 @@ export class AuthentificationService {
     this.isLoginSubject.next(this.isLogin);
   }
 
-  constructor(private httpClient: HttpClient) { }
+  url: string;
+
+  constructor(private httpClient: HttpClient, urlService : UrlService) {
+    this.url = urlService.url+'utilisateur/';
+  }
 
   authenticate(utilisateur : UtilisateurModel) {
     return this.httpClient
-      .post('http://localhost:8080/utilisateur/login/', utilisateur);
+      .post(this.url, utilisateur);
   }
 
   isUserLoggedIn() {
