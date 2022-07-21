@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Subject} from "rxjs";
 import {UtilisateurModel} from "../models/utilisateur.model";
+import {UrlService} from "./url.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtilisateurService {
 
-  url = 'http://localhost:8080/utilisateur/';
+  //url = 'http://localhost:8080/utilisateur/';
   // @ts-ignore
   listUtilisateurs : UtilisateurModel[];
   listUtilisateurSubject = new Subject<UtilisateurModel[]>();
@@ -16,7 +17,11 @@ export class UtilisateurService {
     this.listUtilisateurSubject.next(this.listUtilisateurs.slice());
   }
 
-  constructor(private httpClient: HttpClient) { }
+  url: string;
+
+  constructor(private httpClient: HttpClient, urlService : UrlService) {
+    this.url = urlService.url+'utilisateur/';
+  }
 
   getAllUtilisateurs() {
     this.httpClient.get<UtilisateurModel[]>(this.url).subscribe(

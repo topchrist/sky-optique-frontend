@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Subject} from "rxjs";
 import {StockModel} from "../models/stockModel";
+import {UrlService} from "./url.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class StockService {
 
-  url = 'http://localhost:8080/stock/';
+  //url = 'http://localhost:8080/stock/';
 
 /*
   listStocks : StockModel[];
@@ -30,7 +31,11 @@ export class StockService {
   }
   */
 
-constructor(private httpClient: HttpClient) { }
+  url: string;
+
+  constructor(private httpClient: HttpClient, urlService : UrlService) {
+    this.url = urlService.url+'stock/';
+  }
 
   getAllStocks() {
     return this.httpClient.get<any[]>(this.url);

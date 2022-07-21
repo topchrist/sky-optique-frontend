@@ -3,20 +3,26 @@ import { HttpClient } from '@angular/common/http';
 import {Subject} from "rxjs";
 import {ProduitModel} from "../models/produit.model";
 import {LentilleModel} from "../models/lentille.model";
+import {UrlService} from "./url.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProduitService {
 
-  url = 'http://localhost:8080/produit/';
+  //url = 'http://localhost:8080/produit/';
 
   listProduits : ProduitModel[];
   listProduitSubject = new Subject<ProduitModel[]>();
   emitlistProduitSubject(){
     this.listProduitSubject.next(this.listProduits.slice());
   }
-  constructor(private httpClient: HttpClient) { }
+
+  url: string;
+
+  constructor(private httpClient: HttpClient, urlService : UrlService) {
+    this.url = urlService.url+'produit/';
+  }
 
   getAllProduits() {
     return this.httpClient.get<any[]>(this.url).subscribe(

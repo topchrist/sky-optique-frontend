@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {MontureModel} from "../models/monture.model";
 import {Subject} from "rxjs";
+import {UrlService} from "./url.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MontureService {
 
-  url = 'http://localhost:8080/monture/';
+  //url = 'http://localhost:8080/monture/';
   // @ts-ignore
   listMontures : MontureModel[];
   listMontureSubject = new Subject<MontureModel[]>();
@@ -16,7 +17,11 @@ export class MontureService {
     this.listMontureSubject.next(this.listMontures.slice());
   }
 
-  constructor(private httpClient: HttpClient) { }
+  url: string;
+
+  constructor(private httpClient: HttpClient, urlService : UrlService) {
+    this.url = urlService.url+'monture/';
+  }
 
   getAllMontures() {
     this.httpClient.get<MontureModel[]>(this.url).subscribe(

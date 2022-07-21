@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Subject} from "rxjs";
 import {VenteModel} from "../models/vente.model";
+import {UrlService} from "./url.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class VenteService {
 
-  url = 'http://localhost:8080/vente/';
+  //url = 'http://localhost:8080/vente/';
   // @ts-ignore
   listVentes : VenteModel[];
   listVenteSubject = new Subject<VenteModel[]>();
@@ -16,7 +17,11 @@ export class VenteService {
     this.listVenteSubject.next(this.listVentes);
   }
 
-  constructor(private httpClient: HttpClient) { }
+  url: string;
+
+  constructor(private httpClient: HttpClient, urlService : UrlService) {
+    this.url = urlService.url+'vente/';
+  }
 
   getAllVentes() {
     this.httpClient.get<VenteModel[]>(this.url).subscribe(

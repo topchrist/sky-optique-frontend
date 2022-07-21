@@ -3,13 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import {Subject} from "rxjs";
 import {PatientModel} from "../models/patient.model";
 import {MarqueModel} from "../models/marque.model";
+import {UrlService} from "./url.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PatientService {
 
-  url = 'http://localhost:8080/patient/';
+  //url = 'http://localhost:8080/patient/';
   // @ts-ignore
   listPatients : PatientModel[];
   listPatientSubject = new Subject<PatientModel[]>();
@@ -17,7 +18,11 @@ export class PatientService {
     this.listPatientSubject.next(this.listPatients);
   }
 
-  constructor(private httpClient: HttpClient) { }
+  url: string;
+
+  constructor(private httpClient: HttpClient, urlService : UrlService) {
+    this.url = urlService.url+'patient/';
+  }
 
   getAllPatientsSubject() {
     this.httpClient.get<PatientModel[]>(this.url).subscribe(

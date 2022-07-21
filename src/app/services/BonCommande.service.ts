@@ -2,20 +2,26 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Subject} from "rxjs";
 import {BonCommandeModel} from "../models/bonCommande.model";
+import {UrlService} from "./url.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class BonCommandeService {
 
-  url = 'http://localhost:8080/bonCommande/';
+  //url = 'http://localhost:8080/bonCommande/';
 
   listBonCommandes : BonCommandeModel[];
   listBonCommandeSubject = new Subject<BonCommandeModel[]>();
   emitListBonCommandeModelSubject(){
     this.listBonCommandeSubject.next(this.listBonCommandes.slice());
   }
-  constructor(private httpClient: HttpClient) { }
+
+  url: string;
+
+  constructor(private httpClient: HttpClient, urlService : UrlService) {
+    this.url = urlService.url+'bonCommande/';
+  }
 
   getAllBonCommande() {
     return this.httpClient.get<any[]>(this.url).subscribe(

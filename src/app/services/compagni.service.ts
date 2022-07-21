@@ -3,13 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import {Subject} from "rxjs";
 import {CompagniModel} from "../models/compagni.model";
 import {NgxSpinnerService} from "ngx-spinner";
+import {UrlService} from "./url.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompagniService {
 
-  url = 'http://localhost:8080/compagni/';
+  //url = 'http://localhost:8080/compagni/';
   // @ts-ignore
   listCompagnis : CompagniModel[];
   listCompagniSubject = new Subject<CompagniModel[]>();
@@ -17,7 +18,11 @@ export class CompagniService {
     this.listCompagniSubject.next(this.listCompagnis);
   }
 
-  constructor(private SpinnerService: NgxSpinnerService, private httpClient: HttpClient) { }
+  url: string;
+
+  constructor(private httpClient: HttpClient, urlService : UrlService) {
+    this.url = urlService.url+'compagni/';
+  }
 
   getAllCompagnisSubject() {
     this.httpClient.get<CompagniModel[]>(this.url).subscribe(

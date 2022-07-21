@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {Subject} from "rxjs";
 import {ProformaModel} from "../models/Proforma.model";
-import {PatientModel} from "../models/patient.model";
+import {UrlService} from "./url.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProformaService {
 
-  url = 'http://localhost:8080/proforma/';
+  //url = 'http://localhost:8080/proforma/';
 
-  constructor(private httpClient: HttpClient) { }
+  url: string;
+
+  constructor(private httpClient: HttpClient, urlService : UrlService) {
+    this.url = urlService.url+'proforma/';
+  }
 
   getAllPagesProformas(request) {
     const params = request;

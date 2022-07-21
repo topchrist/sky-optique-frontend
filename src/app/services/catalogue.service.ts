@@ -2,23 +2,20 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Subject} from "rxjs";
 import {CatalogueModel} from "../models/catalogue.model";
+import {UrlService} from "./url.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CatalogueService {
 
-  url = 'http://localhost:8080/catalogue/';
+  //url = 'http://localhost:8080/catalogue/';
 
-  /*
-  // @ts-ignore
-  listCatalogues : CatalogueModel[];
-  listCatalogueSubject = new Subject<CatalogueModel[]>();
-  emitListCatalogueSubject(){
-    this.listCatalogueSubject.next(this.listCatalogues.slice());
-  }*/
+  url: string;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, urlService : UrlService) {
+    this.url = urlService.url+'catalogue/';
+  }
 
   getAllCatalogues() {
     return this.httpClient.get<CatalogueModel[]>(this.url);

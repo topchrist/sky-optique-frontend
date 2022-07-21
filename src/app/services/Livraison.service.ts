@@ -5,20 +5,25 @@ import {ProduitModel} from "../models/produit.model";
 import {LentilleModel} from "../models/lentille.model";
 import {BonLivraisonModel} from "../models/bonLivraison.model";
 import {LivraisonModel} from "../models/livraison.model";
+import {UrlService} from "./url.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class LivraisonService {
 
-  url = 'http://localhost:8080/livraison/';
+  //url = 'http://localhost:8080/livraison/';
 
   listLivraisons : LivraisonModel[];
   listLivraisonSubject = new Subject<LivraisonModel[]>();
   emitListLivraisonSubject(){
     this.listLivraisonSubject.next(this.listLivraisons.slice());
   }
-  constructor(private httpClient: HttpClient) { }
+  url: string;
+
+  constructor(private httpClient: HttpClient, urlService : UrlService) {
+    this.url = urlService.url+'livraison/';
+  }
 
   getAllLivraison() {
     return this.httpClient.get<LivraisonModel[]>(this.url).subscribe(

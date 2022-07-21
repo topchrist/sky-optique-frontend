@@ -3,15 +3,20 @@ import { HttpClient } from '@angular/common/http';
 import {MontureModel} from "../models/monture.model";
 import {Subject} from "rxjs";
 import {LentilleModel} from "../models/lentille.model";
+import {UrlService} from "./url.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class LentilleService {
 
-  url = 'http://localhost:8080/lentille/';
+  //url = 'http://localhost:8080/lentille/';
 
-  constructor(private httpClient: HttpClient) { }
+  url: string;
+
+  constructor(private httpClient: HttpClient, urlService : UrlService) {
+    this.url = urlService.url+'lentille/';
+  }
 
   getAllLentilles() {
     this.httpClient.get<LentilleModel[]>(this.url);

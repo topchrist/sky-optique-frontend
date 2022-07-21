@@ -2,15 +2,20 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Subject} from "rxjs";
 import {FactureClientModel} from "../models/factureClient.model";
+import {UrlService} from "./url.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class FactureClientService {
 
-  url = 'http://localhost:8080/factureClient/';
+  //url = 'http://localhost:8080/factureClient/';
 
-  constructor(private httpClient: HttpClient) { }
+  url: string;
+
+  constructor(private httpClient: HttpClient, urlService : UrlService) {
+    this.url = urlService.url+'factureClient/';
+  }
 
   getAllFactureClients() {
     return this.httpClient.get<FactureClientModel[]>(this.url);

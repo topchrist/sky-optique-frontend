@@ -4,13 +4,14 @@ import {MontureModel} from "../models/monture.model";
 import {Subject} from "rxjs";
 import {LentilleModel} from "../models/lentille.model";
 import {FournisseurModel} from "../models/fournisseur.model";
+import {UrlService} from "./url.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class FournisseurService {
 
-  url = 'http://localhost:8080/fournisseur/';
+  //url = 'http://localhost:8080/fournisseur/';
   // @ts-ignore
   listFournisseurs : FournisseurModel[];
   listFournisseurSubject = new Subject<FournisseurModel[]>();
@@ -18,7 +19,11 @@ export class FournisseurService {
     this.listFournisseurSubject.next(this.listFournisseurs);
   }
 
-  constructor(private httpClient: HttpClient) { }
+  url: string;
+
+  constructor(private httpClient: HttpClient, urlService : UrlService) {
+    this.url = urlService.url+'fournisseur/';
+  }
 
   getAllFournisseurs() {
     this.httpClient.get<FournisseurModel[]>(this.url).subscribe(

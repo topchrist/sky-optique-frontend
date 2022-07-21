@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Subject} from "rxjs";
 import {PersonneModel} from "../models/personne.model";
+import {UrlService} from "./url.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PersonneService {
 
-  url = 'http://localhost:8080/personne/';
+  //url = 'http://localhost:8080/personne/';
 
   // @ts-ignore
   listPersonnes : PersonneModel[];
@@ -17,7 +18,11 @@ export class PersonneService {
     this.listPersonneSubject.next(this.listPersonnes.slice());
   }
 
-  constructor(private httpClient: HttpClient) { }
+  url: string;
+
+  constructor(private httpClient: HttpClient, urlService : UrlService) {
+    this.url = urlService.url+'personne/';
+  }
 
   getAllPersonneSubject() {
     this.httpClient.get<any[]>(this.url).subscribe(

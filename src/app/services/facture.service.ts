@@ -4,13 +4,14 @@ import {MontureModel} from "../models/monture.model";
 import {Subject} from "rxjs";
 import {LentilleModel} from "../models/lentille.model";
 import {FactureModel} from "../models/facture.model";
+import {UrlService} from "./url.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class FactureService {
 
-  url = 'http://localhost:8080/facture/';
+  //url = 'http://localhost:8080/facture/';
   // @ts-ignore
   listFactures : FactureModel[];
   listFactureSubject = new Subject<FactureModel[]>();
@@ -18,7 +19,11 @@ export class FactureService {
     this.listFactureSubject.next(this.listFactures);
   }
 
-  constructor(private httpClient: HttpClient) { }
+  url: string;
+
+  constructor(private httpClient: HttpClient, urlService : UrlService) {
+    this.url = urlService.url+'facture/';
+  }
 
   getAllFactures() {
     this.httpClient.get<FactureModel[]>(this.url).subscribe(

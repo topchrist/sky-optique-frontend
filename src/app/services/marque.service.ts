@@ -2,15 +2,18 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Subject} from "rxjs";
 import {MarqueModel} from "../models/marque.model";
+import {UrlService} from "./url.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MarqueService {
 
-  url = 'http://localhost:8080/marque/';
+  url: string;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, urlService : UrlService) {
+    this.url = urlService.url+'marque/';
+  }
 
   getAllPagesMarques(request) {
     const params = request;
