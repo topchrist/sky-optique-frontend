@@ -8,24 +8,17 @@ import {MarqueModel} from "../models/marque.model";
 })
 export class MarqueService {
 
-  url = 'https://sky-optique-back2.herokuapp.com/marque/';
-  // @ts-ignore
-  listMarques : MarqueModel[];
-  listMarqueSubject = new Subject<MarqueModel[]>();
-  emitListMarqueSubject(){
-    this.listMarqueSubject.next(this.listMarques.slice());
-  }
+  url = 'http://localhost:8080/marque/';
 
   constructor(private httpClient: HttpClient) { }
 
+  getAllPagesMarques(request) {
+    const params = request;
+    return this.httpClient.get<MarqueModel[]>(this.url+"find", { params });
+  }
+
   getAllMarques() {
-    this.httpClient.get<MarqueModel[]>(this.url).subscribe(
-      (data: any[]) => {
-        // @ts-ignore
-        this.listMarques = data;
-        this.emitListMarqueSubject();
-      }
-    );
+    return this.httpClient.get<MarqueModel[]>(this.url);
   }
 
   getMarqueById(idMarque : number) {

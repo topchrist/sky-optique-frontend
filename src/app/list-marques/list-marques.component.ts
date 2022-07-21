@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {Subscription} from "rxjs";
 import {MarqueService} from "../services/marque.service";
 import {MarqueModel} from "../models/marque.model";
+import {PageEvent} from "@angular/material/paginator";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
   selector: 'app-list-marques',
@@ -10,37 +12,56 @@ import {MarqueModel} from "../models/marque.model";
 })
 export class ListMarquesComponent implements OnInit {
 
-  loading = false;
-  marques: MarqueModel[];
-  listSubscription : Subscription;
+    marques: MarqueModel[];
 
-  constructor(private marqueService : MarqueService) { }
+    size : number = 10;
+    page : number = 0;
+    mc : string = "";
+    totalElements: number = 0;
 
-  ngOnInit(): void {
-    this.loading = true;
-    this.listSubscription = this.marqueService.listMarqueSubject.subscribe(
-      (data: MarqueModel[]) => {
-        this.marques = data;
-        this.loading = false;
-      }
-    );
-    this.marqueService.getAllMarques();
-  }
+    constructor(private spinnerService: NgxSpinnerService, private marqueService : MarqueService) { }
 
-  ngOnDestroy(): void {
-    this.listSubscription.unsubscribe();
-  }
+    ngOnInit(): void {
+        this.getAllMarques({mc:"", page: "0", size: "10" });
+    }
 
-  deleteMarque(id: number) {
-    this.loading = true;
-    this.marqueService.deleteMarque(id)
-      .subscribe( data =>{
-        console.log("ok deleting");
-        this.marqueService.getAllMarques();
-      });
+    getAllMarques(request){
+        this.spinnerService.show();
+        this.marqueService.getAllPagesMarques(request).subscribe((data: MarqueModel[]) => {
+            console.log(data);
+            this.marques = data['content'];
+            this.totalElements = data['totalElements'];
+            this.spinnerService.hide();
+        }, error => {
+            this.spinnerService.hide();
+        });
+    }
 
-    this.loading = false;
-  }
+    deleteMarque(id: number) {
+        this.spinnerService.show();
+        this.marqueService.deleteMarque(id).subscribe( data =>{
+            console.log("ok deleting");
+            this.spinnerService.hide();
+            this.getAllMarques({mc: this.mc.trim(), page: this.page, size: this.size });
+        }, error => {
+            this.spinnerService.hide();
+        });
+    }
+
+    nextPage(event: PageEvent) {
+        const request = {};
+        request['mc'] = this.mc;
+        request['page'] = event.pageIndex.toString();
+        this.page = event.pageIndex;
+        request['size'] = event.pageSize.toString();
+        this.size = event.pageSize;
+        // @ts-ignore
+        this.getAllMarques(request);
+    }
 
 
+    onRecherche() {
+        this.mc = this.mc.trim();
+        this.getAllMarques({mc: this.mc, page: this.page, size: this.size });
+    }
 }

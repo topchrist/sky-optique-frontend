@@ -8,7 +8,7 @@ import {Subject} from "rxjs";
 })
 export class MontureService {
 
-  url = 'https://sky-optique-back2.herokuapp.com/monture/';
+  url = 'http://localhost:8080/monture/';
   // @ts-ignore
   listMontures : MontureModel[];
   listMontureSubject = new Subject<MontureModel[]>();

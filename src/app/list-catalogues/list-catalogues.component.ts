@@ -4,6 +4,7 @@ import {CatalogueModel} from "../models/catalogue.model";
 import {MarqueService} from "../services/marque.service";
 import {MarqueModel} from "../models/marque.model";
 import {CatalogueService} from "../services/catalogue.service";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
   selector: 'app-list-catalogues',
@@ -14,23 +15,21 @@ export class ListCataloguesComponent implements OnInit {
 
   loading = false;
   catalogues: CatalogueModel[];
-  listSubscription : Subscription;
 
-  constructor(private catalogueService : CatalogueService) { }
+  constructor(private spinnerService: NgxSpinnerService, private catalogueService : CatalogueService) { }
 
   ngOnInit(): void {
+    this.spinnerService.show();
     this.loading = true;
-    this.listSubscription = this.catalogueService.listCatalogueSubject.subscribe(
-      (data: MarqueModel[]) => {
+    this.catalogueService.getAllCatalogues().subscribe(
+      (data) => {
         this.catalogues = data;
-        this.loading = false;
+        this.spinnerService.hide();
+      }, error => {
+        this.spinnerService.hide();
+        console.log('Error ! : ' + error);
       }
     );
-    this.catalogueService.getAllCatalogues();
-  }
-
-  ngOnDestroy(): void {
-    this.listSubscription.unsubscribe();
   }
 
   deleteMarque(id: number) {

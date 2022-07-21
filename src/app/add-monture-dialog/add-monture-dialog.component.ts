@@ -42,7 +42,7 @@ export class AddMontureDialogComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
 
-    this.listMarqueSubscription = this.marqueService.listMarqueSubject.subscribe(data => {
+    this.marqueService.getAllMarques().subscribe(data => {
       this.listMarques = data;
     }, error => {
       console.log('Error ! : ' + error);

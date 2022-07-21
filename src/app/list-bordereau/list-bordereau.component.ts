@@ -6,6 +6,7 @@ import {FactureClientService} from "../services/factureClient.service";
 import {BordereauService} from "../services/bordereau.service";
 import {CompagniModel} from "../models/compagni.model";
 import {CompagniService} from "../services/compagni.service";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
   selector: 'app-list-bordereau',
@@ -22,33 +23,25 @@ export class ListBordereauComponent implements OnInit {
   listEntreprisesSubscription : Subscription;
   idAssurance = null;
 
-  constructor(private bordereauService : BordereauService, private compagniService : CompagniService) { }
+  constructor(private spinnerService: NgxSpinnerService, private bordereauService : BordereauService, private compagniService : CompagniService) { }
 
   ngOnInit(): void {
-    this.loading = true;
+    this.spinnerService.show();
 
-    this.listEntreprisesSubscription = this.compagniService.listCompagniSubject.subscribe(
-      data => {
-        this.listAssurances = (data as CompagniModel[]).filter(entr => entr.type == "assurance");
-      }, error => {
-        console.log('Error ! : ' + error);
-      }
-    );
-    this.compagniService.getAllCompagnis();
-
-    this.listBordereauSubscription = this.bordereauService.listBordereauSubject.subscribe(
-      (data: BordereauModel[]) => {
+    this.bordereauService.getAllBordereau().subscribe((data: BordereauModel[]) => {
         this.bordereaux = data;
         this.filtredBordereaux = this.bordereaux;
-        this.loading = false;
-      }
-    );
-    this.bordereauService.getAllBordereau();
-  }
-
-  ngOnDestroy(): void {
-    this.listBordereauSubscription.unsubscribe();
-    this.listEntreprisesSubscription.unsubscribe();
+        this.compagniService.getAllCompagnis().subscribe(data => {
+          this.listAssurances = (data as CompagniModel[]).filter(entr => entr.type == "assurance");
+          this.spinnerService.hide();
+        }, error => {
+          console.log('Error ! : ' + error);
+          this.spinnerService.hide();
+        });
+    }, error => {
+        console.log('Error ! : ' + error);
+        this.spinnerService.hide();
+    });
   }
 
   onDateFormat(date: any) {

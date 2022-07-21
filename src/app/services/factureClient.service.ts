@@ -8,24 +8,12 @@ import {FactureClientModel} from "../models/factureClient.model";
 })
 export class FactureClientService {
 
-  url = 'https://sky-optique-back2.herokuapp.com/factureClient/';
-  // @ts-ignore
-  listFactureClients : FactureClientModel[];
-  listFactureClientSubject = new Subject<FactureClientModel[]>();
-  emitlistFactureClientSubject(){
-    this.listFactureClientSubject.next(this.listFactureClients);
-  }
+  url = 'http://localhost:8080/factureClient/';
 
   constructor(private httpClient: HttpClient) { }
 
   getAllFactureClients() {
-    this.httpClient.get<FactureClientModel[]>(this.url).subscribe(
-      (data: FactureClientModel[]) => {
-        console.log(data);
-        this.listFactureClients = data;
-        this.emitlistFactureClientSubject();
-      }
-    );
+    return this.httpClient.get<FactureClientModel[]>(this.url);
   }
 
   getAllFactureClientsWithoutBordereau() {

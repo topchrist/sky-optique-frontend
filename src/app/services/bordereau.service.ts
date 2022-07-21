@@ -8,24 +8,12 @@ import {BordereauModel} from "../models/bordereau.model";
 })
 export class BordereauService {
 
-  url = 'https://sky-optique-back2.herokuapp.com/bordereau/';
-  // @ts-ignore
-  listBordereau : BordereauModel[];
-  listBordereauSubject = new Subject<BordereauModel[]>();
-  emitlistBordereauSubject(){
-    this.listBordereauSubject.next(this.listBordereau);
-  }
+  url = 'http://localhost:8080/bordereau/';
 
   constructor(private httpClient: HttpClient) { }
 
   getAllBordereau() {
-    this.httpClient.get<BordereauModel[]>(this.url).subscribe(
-      (data: any[]) => {
-        console.log(data);
-        this.listBordereau = data;
-        this.emitlistBordereauSubject();
-      }
-    );
+    return this.httpClient.get<BordereauModel[]>(this.url);
   }
 
   getBordereauById(idBordereau : number) {

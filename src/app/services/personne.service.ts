@@ -8,7 +8,7 @@ import {PersonneModel} from "../models/personne.model";
 })
 export class PersonneService {
 
-  url = 'https://sky-optique-back2.herokuapp.com/personne/';
+  url = 'http://localhost:8080/personne/';
 
   // @ts-ignore
   listPersonnes : PersonneModel[];
@@ -17,15 +17,9 @@ export class PersonneService {
     this.listPersonneSubject.next(this.listPersonnes.slice());
   }
 
-  listPatients : PersonneModel[];
-  listPatientSubject = new Subject<PersonneModel[]>();
-  emitlistPatientSubject(){
-    this.listPatientSubject.next(this.listPatients.slice());
-  }
-
   constructor(private httpClient: HttpClient) { }
 
-  getAllPersonnes() {
+  getAllPersonneSubject() {
     this.httpClient.get<any[]>(this.url).subscribe(
       (data: any[]) => {
         console.log(data);
@@ -35,16 +29,8 @@ export class PersonneService {
       }
     );
   }
-
-  getAllPatients() {
-    this.httpClient.get<any[]>(this.url+"/client/").subscribe(
-      (data: any[]) => {
-        console.log(data);
-        // @ts-ignore
-        this.listPatients = data;
-        this.emitlistPatientSubject();
-      }
-    );
+  getAllPersonnes() {
+    return this.httpClient.get<any[]>(this.url);
   }
 
   getPersonneById(idPersonne : number) {

@@ -11,7 +11,7 @@ import {LivraisonModel} from "../models/livraison.model";
 })
 export class LivraisonService {
 
-  url = 'https://sky-optique-back2.herokuapp.com/livraison/';
+  url = 'http://localhost:8080/livraison/';
 
   listLivraisons : LivraisonModel[];
   listLivraisonSubject = new Subject<LivraisonModel[]>();

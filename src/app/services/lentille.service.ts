@@ -9,24 +9,12 @@ import {LentilleModel} from "../models/lentille.model";
 })
 export class LentilleService {
 
-  url = 'https://sky-optique-back2.herokuapp.com/lentille/';
-  // @ts-ignore
-  listLentilles : LentilleModel[];
-  listLentilleSubject = new Subject<LentilleModel[]>();
-  emitlistLentilleSubject(){
-    this.listLentilleSubject.next(this.listLentilles);
-  }
+  url = 'http://localhost:8080/lentille/';
 
   constructor(private httpClient: HttpClient) { }
 
   getAllLentilles() {
-    this.httpClient.get<LentilleModel[]>(this.url).subscribe(
-      (data: any[]) => {
-        console.log(data);
-        this.listLentilles = data;
-        this.emitlistLentilleSubject();
-      }
-    );
+    this.httpClient.get<LentilleModel[]>(this.url);
   }
 
   getLentilleById(idLentille : number) {

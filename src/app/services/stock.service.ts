@@ -8,8 +8,9 @@ import {StockModel} from "../models/stockModel";
 })
 export class StockService {
 
-  url = 'https://sky-optique-back2.herokuapp.com/stock/';
+  url = 'http://localhost:8080/stock/';
 
+/*
   listStocks : StockModel[];
   listStockSubject = new Subject<StockModel[]>();
   emitListStockSubject(){
@@ -27,43 +28,22 @@ export class StockService {
   emitListStockLentilleSubject(){
     this.listStockLentilleSubject.next(this.listStockLentille.slice());
   }
+  */
 
-
-
-  constructor(private httpClient: HttpClient) { }
+constructor(private httpClient: HttpClient) { }
 
   getAllStocks() {
-    return this.httpClient.get<any[]>(this.url).subscribe(
-      (data: StockModel[]) => {
-        this.listStocks = data;
-        this.emitListStockSubject();
-      }
-    );
+    return this.httpClient.get<any[]>(this.url);
   }
   getAllStockMonture() {
-    return this.httpClient.get<any[]>(this.url+'monture/').subscribe(
-      (data: StockModel[]) => {
-        this.listStockMonture = data;
-        this.emitListStockMontureSubject();
-      }
-    );
+    return this.httpClient.get<any[]>(this.url+'monture/');
   }
   getAllStockLentille() {
-    return this.httpClient.get<any[]>(this.url+'lentille/').subscribe(
-      (data: StockModel[]) => {
-        this.listStockLentille = data;
-        this.emitListStockLentilleSubject();
-      }
-    );
+    return this.httpClient.get<any[]>(this.url+'lentille/');
   }
 
   getAllStocksByQte(qte : number) {
-    return this.httpClient.get<any[]>(this.url+'stockByQte/'+qte).subscribe(
-      (data: StockModel[]) => {
-        this.listStocks = data;
-        this.emitListStockSubject();
-      }
-    );
+    return this.httpClient.get<any[]>(this.url+'stockByQte/'+qte);
   }
 
   getStockById(idStock : number) {

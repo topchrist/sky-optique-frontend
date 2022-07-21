@@ -52,15 +52,7 @@
             </label>
             <input type="number" id="addition" class="form-control" formControlName="addition" />
           </div>
-          <br/>
-          <div class="form-group">
-            <label for="qte">Quantité*</label>
-            <input type="text" id="qte" class="form-control" formControlName="qte" [ngClass]="{ 'is-invalid': submitted && f.qte.errors }" />
-            <div *ngIf="submitted && f.qte.errors" class="invalid-feedback">
-              <div *ngIf="f.qte.errors.required">Veuillez renseigner la quantité</div>
-              <div *ngIf="f.qte.errors.min">La Quantité doit être supérieur ou égale à 0</div>
-            </div>
-          </div>
+
           <br/>
           <div class="form-group">
             <label for="prixVente">Prix de vente*</label>

@@ -11,6 +11,7 @@ import {StockService} from "../services/stock.service";
 import {PersonneModel} from "../models/personne.model";
 import {MatAutocompleteTrigger} from "@angular/material/autocomplete";
 import {map, startWith} from "rxjs/operators";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
   selector: 'app-edit-monture',
@@ -24,7 +25,7 @@ export class EditMontureComponent implements OnInit {
   submitted = false;
   loading = false;
   stock = new StockModel(null, null, null, null, new MontureModel(null, null, null, null, null, null, null));
-  monture = new MontureModel(null, null, null, null, null, null, null);
+  //monture = new MontureModel(null, null, null, null, null, null, null);
 
   marque : MarqueModel = null;
   filteredMarque : Observable<MarqueModel[]>;
@@ -34,7 +35,8 @@ export class EditMontureComponent implements OnInit {
   marqueTriggerSubscription : Subscription;
   @ViewChild('autoCompleteMarque', { read: MatAutocompleteTrigger }) triggerMarque: MatAutocompleteTrigger;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private spinnerService: NgxSpinnerService,
+              private formBuilder: FormBuilder,
               private montureService :  MontureService,
               private stockService :  StockService,
               private marqueService : MarqueService,
@@ -44,18 +46,19 @@ export class EditMontureComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.spinnerService.show();
     this.isAddMode = !this.stock.id;
     this.initForm(this.stock);
 
-    this.listMarqueSubscription = this.marqueService.listMarqueSubject.subscribe(data => {
+    this.marqueService.getAllMarques().subscribe(data => {
       this.listMarques = data;
+      this.spinnerService.hide();
     }, error => {
       console.log('Error ! : ' + error);
+      this.spinnerService.hide();
     });
-    this.marqueService.getAllMarques();
 
     if (!this.isAddMode) {
-      this.loading = true;
       this.stockService.getStockById(this.stock.id).subscribe((response) => {
         this.stock = response;
         if((this.stock.produit as MontureModel).marque!=null)
@@ -84,7 +87,6 @@ export class EditMontureComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.listMarqueSubscription.unsubscribe();
     this.marqueTriggerSubscription.unsubscribe();
   }
 
@@ -166,8 +168,6 @@ export class EditMontureComponent implements OnInit {
     editedStock.prixVente = formValue['prixVente'];
     editedStock.qte = formValue['qte'];
 
-    console.log(editedMonture);
-
     if (this.isAddMode) {
       this.addMonture(editedStock);
     } else {
@@ -182,39 +182,40 @@ export class EditMontureComponent implements OnInit {
   }
 
   private addMonture(stock : StockModel) {
+    this.spinnerService.show();
     this.montureService.addMonture(stock.produit as MontureModel).subscribe(data1=>{
       stock.produit = data1 as MontureModel;
       this.stockService.addStock(stock).subscribe(data2=>{
-        this.loading = false;
-        this.stockService.getAllStockMonture();
+        this.spinnerService.hide();
         this.router.navigate(['/montures']);
       }, error => {
         console.log('Error ! : ' + error);
+        this.spinnerService.hide();
       });
     }, error => {
       console.log('Error ! : ' + error);
-      this.loading = false;
+      this.spinnerService.hide();
     });
 
   }
 
   private updateMonture(stock : StockModel) {
+    this.spinnerService.show();
     stock.id = this.stock.id;
+    console.log(stock.produit as MontureModel);
     this.montureService.updateMonture(stock.produit as MontureModel).subscribe(data1=>{
       stock.produit = data1 as MontureModel;
-      console.log(stock.produit);
-      console.log(stock);
+
       this.stockService.updateStock(stock).subscribe(data2=>{
-        console.log(data2);
-        this.loading = false;
-        this.stockService.getAllStockMonture();
+        this.spinnerService.hide();
         this.router.navigate(['/montures']);
       }, error => {
         console.log('Error ! : ' + error);
+        this.spinnerService.hide();
       });
     }, error => {
       console.log('Error ! : ' + error);
-      this.loading = false;
+      this.spinnerService.hide();
     });
   }
 

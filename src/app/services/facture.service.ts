@@ -10,7 +10,7 @@ import {FactureModel} from "../models/facture.model";
 })
 export class FactureService {
 
-  url = 'https://sky-optique-back2.herokuapp.com/facture/';
+  url = 'http://localhost:8080/facture/';
   // @ts-ignore
   listFactures : FactureModel[];
   listFactureSubject = new Subject<FactureModel[]>();

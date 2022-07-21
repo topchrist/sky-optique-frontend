@@ -14,7 +14,6 @@ export class ListFacturesComponent implements OnInit {
   loading = false;
   factures: FactureClientModel[];
   filtredFactures: FactureClientModel[];
-  listFactureSubscription : Subscription;
   dateDebut = null;
   dateFin = null;
   dateDebutControl = new FormControl(new Date(2022, 1, 1, 0, 0, 0, 0),[Validators.required]);
@@ -24,18 +23,16 @@ export class ListFacturesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
-    this.listFactureSubscription = this.factureClientService.listFactureClientSubject.subscribe(
+    this.factureClientService.getAllFactureClients().subscribe(
       (data: FactureClientModel[]) => {
         this.factures = data;
         this.filtredFactures = this.factures;
         this.loading = false;
       }
     );
-    this.factureClientService.getAllFactureClients();
   }
 
   ngOnDestroy(): void {
-    this.listFactureSubscription.unsubscribe();
   }
 
   deleteFacture(id: number) {

@@ -66,7 +66,6 @@ export class EditPersonneComponent implements OnInit {
     this.listEntreprisesSubscription.unsubscribe();
   }
 
-
   initForm(personne : PersonneModel){
     this.personneForm = this.formBuilder.group({
       civilite: personne.civilite,

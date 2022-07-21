@@ -8,7 +8,7 @@ import {AgenceModel} from "../models/agence.model";
 })
 export class AgenceService {
 
-  url = 'https://sky-optique-back2.herokuapp.com/agence/';
+  url = 'http://localhost:8080/agence/';
   // @ts-ignore
   listAgences : AgenceModel[];
   listAgenceSubject = new Subject<AgenceModel[]>();

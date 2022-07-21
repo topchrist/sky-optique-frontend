@@ -63,6 +63,18 @@ import { EditCatalogueComponent } from './edit-catalogue/edit-catalogue.componen
 import { ListCataloguesComponent } from './list-catalogues/list-catalogues.component';
 import { AddLentilleDialogComponent } from './add-lentille-dialog/add-lentille-dialog.component';
 import { AddPatientDialogComponent } from './add-patient-dialog/add-patient-dialog.component';
+import { EditPrescripteurComponent } from './edit-prescripteur/edit-prescripteur.component';
+import { ListPrescripteursComponent } from './list-prescripteurs/list-prescripteurs.component';
+import { EditPatientComponent } from './edit-patient/edit-patient.component';
+import { ListPatientsComponent } from './list-patients/list-patients.component';
+import {NgxSpinnerModule} from "ngx-spinner";
+import { EditStockLentilleComponent } from './edit-stock-lentille/edit-stock-lentille.component';
+import { EditStockMontureComponent } from './edit-stock-monture/edit-stock-monture.component';
+import { EditPatientDialogComponent } from './edit-patient-dialog/edit-patient-dialog.component';
+import { EditPrescripteurDialogComponent } from './edit-prescripteur-dialog/edit-prescripteur-dialog.component';
+import { EditMontureDialogComponent } from './edit-monture-dialog/edit-monture-dialog.component';
+import { EditLentilleDialogComponent } from './edit-lentille-dialog/edit-lentille-dialog.component';
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 @NgModule({
   declarations: [
@@ -109,7 +121,17 @@ import { AddPatientDialogComponent } from './add-patient-dialog/add-patient-dial
     ListCataloguesComponent,
     AddLentilleDialogComponent,
     EditUtilisateurComponent,
-    AddPatientDialogComponent
+    AddPatientDialogComponent,
+    EditPrescripteurComponent,
+    ListPrescripteursComponent,
+    EditPatientComponent,
+    ListPatientsComponent,
+    EditStockLentilleComponent,
+    EditStockMontureComponent,
+    EditPatientDialogComponent,
+    EditPrescripteurDialogComponent,
+    EditMontureDialogComponent,
+    EditLentilleDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -133,7 +155,10 @@ import { AddPatientDialogComponent } from './add-patient-dialog/add-patient-dial
     MatSelectModule,
     MatOptionModule,
     MatSlideToggleModule,
-    MatDialogModule
+    MatDialogModule,
+    MatPaginatorModule,
+
+    NgxSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -348,7 +348,7 @@ export class PrintProformaComponent implements OnInit {
                             [ 'Patient : ', proforma.patient.nom],
                             [ 'Télephone : ', (proforma.patient.tel1?proforma.patient.tel1:'')],
                             [ 'Assurance : ', {text: proforma.couvertures.length>0?proforma.couvertures[0].assurance.nom:''}],
-                            [ 'Société : ', {text: proforma.couvertures.length>0?proforma.couvertures[0].entreprise.nom:''}],
+                            [ 'Société : ', {text: (proforma.couvertures.length>0 && proforma.couvertures[0].entreprise!=null)?proforma.couvertures[0].entreprise.nom:''}],
                           ]
                         }
                       }

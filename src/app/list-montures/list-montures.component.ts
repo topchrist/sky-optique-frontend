@@ -4,6 +4,7 @@ import {MontureModel} from "../models/monture.model";
 import {MontureService} from "../services/monture.service";
 import {StockService} from "../services/stock.service";
 import {StockModel} from "../models/stockModel";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
   selector: 'app-list-montures',
@@ -17,22 +18,19 @@ export class ListMonturesComponent implements OnInit {
   montures: MontureModel[];
   stocks: StockModel[];
   // @ts-ignore
-  listMontureSubscription : Subscription;
-  constructor(private stockService : StockService, private montureService : MontureService) { }
+  constructor(private spinnerService: NgxSpinnerService, private stockService : StockService, private montureService : MontureService) { }
 
   ngOnInit(): void {
-    this.loading = true;
-    this.listMontureSubscription = this.stockService.listStockMontureSubject.subscribe(
+    this.spinnerService.show();
+    this.stockService.getAllStockMonture().subscribe(
       (data: StockModel[]) => {
         this.stocks = data;
-      }
+        this.spinnerService.hide();
+      }, error => {
+          this.spinnerService.hide();
+          console.log('Error ! : ' + error);
+        }
     );
-    this.stockService.getAllStockMonture();
-    this.loading = false;
-  }
-
-  ngOnDestroy(): void {
-    this.listMontureSubscription.unsubscribe();
   }
 
   deleteMonture(id: number) {

@@ -2,30 +2,24 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Subject} from "rxjs";
 import {ProformaModel} from "../models/Proforma.model";
+import {PatientModel} from "../models/patient.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProformaService {
 
-  url = 'https://sky-optique-back2.herokuapp.com/proforma/';
-  // @ts-ignore
-  listProformas : ProformaModel[];
-  listProformaSubject = new Subject<ProformaModel[]>();
-  emitlistProformaSubject(){
-    this.listProformaSubject.next(this.listProformas);
-  }
+  url = 'http://localhost:8080/proforma/';
 
   constructor(private httpClient: HttpClient) { }
 
+  getAllPagesProformas(request) {
+    const params = request;
+    return this.httpClient.get<ProformaModel[]>(this.url+"find", { params });
+  }
+
   getAllProformas() {
-    this.httpClient.get<ProformaModel[]>(this.url).subscribe(
-      (data: ProformaModel[]) => {
-        console.log(data);
-        this.listProformas = data;
-        this.emitlistProformaSubject();
-      }
-    );
+    return this.httpClient.get<ProformaModel[]>(this.url);
   }
 
   getProformaById(idProforma : number) {

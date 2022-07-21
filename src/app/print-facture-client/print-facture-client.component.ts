@@ -340,7 +340,7 @@ export class PrintFactureClientComponent implements OnInit {
                           widths: [ 'auto', '*'],
                           body: [
                             [ 'Assuré : ',{text: proforma.couvertures.length>0?(proforma.couvertures[0].assurePrincipal.nom+' '+(proforma.couvertures[0].assurePrincipal.prenom?proforma.couvertures[0].assurePrincipal.prenom:'')):''}],
-                            [ 'Entreprise : ', {text: proforma.couvertures.length>0?proforma.couvertures[0].entreprise.nom:''}],
+                            [ 'Entreprise : ', {text: (proforma.couvertures.length>0 && proforma.couvertures[0].entreprise!=null)?proforma.couvertures[0].entreprise.nom:''}],
                             [ 'No BPC : ', {}],
                             [ 'Patient : ', {text: proforma.patient.nom+' '+(proforma.patient.prenom?proforma.patient.prenom:'')}],
                             [ 'Relation : ', {text: proforma.couvertures.length>0?proforma.couvertures[0].relation:''}],

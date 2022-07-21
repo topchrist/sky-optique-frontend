@@ -1,0 +1,45 @@
+<div class="card">
+    <div class="card-header text-white bg-primary">Liste des Patients</div>
+    <div class="card-body">
+        <mat-form-field appearance="outline">
+            <mat-label>Nom de du patient</mat-label>
+            <input type="text" matInput placeholder="Recherche" [(ngModel)]="mc" (input)="onRecherche()" >
+        </mat-form-field>
+        <table class="table table-striped table-sm">
+            <thead>
+            <tr>
+                <th>Civilité</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Date de naissance</th>
+                <th>Email</th>
+                <th>Adresse</th>
+                <th>Tel1</th>
+                <th>Entreprise</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let patient of patients">
+                <td>{{ patient.civilite }}</td>
+                <td>{{ patient.nom }}</td>
+                <td>{{ patient.prenom }}</td>
+                <td>{{ patient.dateNaiss }}</td>
+                <td>{{ patient.email }}</td>
+                <td>{{ patient.adresse }}</td>
+                <td>{{ patient.tel1 }}</td>
+                <td>{{ patient.entreprise?patient.entreprise.nom:'' }}</td>
+                <td style="white-space: nowrap">
+                    <a routerLink="../update-patient/{{patient.id}}" class="btn btn-sm btn-primary mr-1">Modifier</a>
+                    <button (click)="deletePatient(patient.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="false">
+                        <span>Supprimer</span>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <mat-paginator [pageSizeOptions]="[2, 5, 10, 25, 100]" [pageSize]="5" [length]="totalElements" (page)="nextPage($event)"> </mat-paginator>
+    </div>
+</div>
+
+

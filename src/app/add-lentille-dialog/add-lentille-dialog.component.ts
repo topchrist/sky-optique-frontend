@@ -11,6 +11,7 @@ import {LentilleService} from "../services/lentille.service";
 import {map, startWith} from "rxjs/operators";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {AddMontureDialogComponent} from "../add-monture-dialog/add-monture-dialog.component";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
   selector: 'app-add-lentille-dialog',
@@ -26,27 +27,30 @@ export class AddLentilleDialogComponent implements OnInit {
   catalogue : CatalogueModel = null;
   filteredCatalogue : Observable<CatalogueModel[]>;
   listCatalogues : CatalogueModel[]=[];
-  listCatalogueSubscription : Subscription;
   catalogueTriggerSubscription : Subscription;
   @ViewChild('autoCompleteCatalogue', { read: MatAutocompleteTrigger }) triggerCatalogue: MatAutocompleteTrigger;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private spinnerService: NgxSpinnerService,
+              private formBuilder: FormBuilder,
               private catalogueService :  CatalogueService,
               private stockService :  StockService,
               private lentilleService : LentilleService,
               public dialogRef: MatDialogRef<AddMontureDialogComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: StockModel,
+              @Inject(MAT_DIALOG_DATA) public lentille: StockModel,
               ) { }
 
   ngOnInit(): void {
+    this.spinnerService.show();
+    console.log(this.lentille);
     this.initForm();
 
-    this.listCatalogueSubscription = this.catalogueService.listCatalogueSubject.subscribe(data => {
+    this.catalogueService.getAllCatalogues().subscribe(data => {
       this.listCatalogues = data;
+      this.spinnerService.hide();
     }, error => {
+      this.spinnerService.hide();
       console.log('Error ! : ' + error);
     });
-    this.catalogueService.getAllCatalogues();
     this.filteredCatalogue = this.lentilleForm.get('catalogue').valueChanges.pipe(
       startWith(''),
       map( value => ( typeof value === 'string' ? value : value.nom)),
@@ -54,7 +58,6 @@ export class AddLentilleDialogComponent implements OnInit {
     );
   }
   ngOnDestroy(): void {
-    this.listCatalogueSubscription.unsubscribe();
     this.catalogueTriggerSubscription.unsubscribe();
   }
   ngAfterViewInit() {

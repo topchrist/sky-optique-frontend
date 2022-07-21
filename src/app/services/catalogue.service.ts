@@ -8,24 +8,20 @@ import {CatalogueModel} from "../models/catalogue.model";
 })
 export class CatalogueService {
 
-  url = 'https://sky-optique-back2.herokuapp.com/catalogue/';
+  url = 'http://localhost:8080/catalogue/';
+
+  /*
   // @ts-ignore
   listCatalogues : CatalogueModel[];
   listCatalogueSubject = new Subject<CatalogueModel[]>();
   emitListCatalogueSubject(){
     this.listCatalogueSubject.next(this.listCatalogues.slice());
-  }
+  }*/
 
   constructor(private httpClient: HttpClient) { }
 
   getAllCatalogues() {
-    this.httpClient.get<CatalogueModel[]>(this.url).subscribe(
-      (data: any[]) => {
-        // @ts-ignore
-        this.listCatalogues = data;
-        this.emitListCatalogueSubject();
-      }
-    );
+    return this.httpClient.get<CatalogueModel[]>(this.url);
   }
 
   getCatalogueById(idCatalogue : number) {

@@ -8,7 +8,7 @@ import {UtilisateurModel} from "../models/utilisateur.model";
 })
 export class UtilisateurService {
 
-  url = 'https://sky-optique-back2.herokuapp.com/utilisateur/';
+  url = 'http://localhost:8080/utilisateur/';
   // @ts-ignore
   listUtilisateurs : UtilisateurModel[];
   listUtilisateurSubject = new Subject<UtilisateurModel[]>();

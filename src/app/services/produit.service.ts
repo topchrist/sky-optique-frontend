@@ -9,7 +9,7 @@ import {LentilleModel} from "../models/lentille.model";
 })
 export class ProduitService {
 
-  url = 'https://sky-optique-back2.herokuapp.com/produit/';
+  url = 'http://localhost:8080/produit/';
 
   listProduits : ProduitModel[];
   listProduitSubject = new Subject<ProduitModel[]>();

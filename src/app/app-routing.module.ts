@@ -37,6 +37,10 @@ import {ListCataloguesComponent} from "./list-catalogues/list-catalogues.compone
 import {EditCatalogueComponent} from "./edit-catalogue/edit-catalogue.component";
 import {ListUtilisateursComponent} from "./list-utilisateurs/list-utilisateurs.component";
 import {EditUtilisateurComponent} from "./edit-utilisateur/edit-utilisateur.component";
+import {ListPrescripteursComponent} from "./list-prescripteurs/list-prescripteurs.component";
+import {EditPrescripteurComponent} from "./edit-prescripteur/edit-prescripteur.component";
+import {EditPatientComponent} from "./edit-patient/edit-patient.component";
+import {ListPatientsComponent} from "./list-patients/list-patients.component";
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate:[AuthGaurdService] },
@@ -94,6 +98,14 @@ const routes: Routes = [
   { path: 'personnes', component: ListPersonnesComponent, canActivate:[AuthGaurdService] },
   { path: 'add-personne', component: EditPersonneComponent, canActivate:[AuthGaurdService] },
   { path: 'update-personne/:id', component: EditPersonneComponent, canActivate:[AuthGaurdService] },
+
+  { path: 'patients', component: ListPatientsComponent, canActivate:[AuthGaurdService] },
+  { path: 'add-patient', component: EditPatientComponent, canActivate:[AuthGaurdService] },
+  { path: 'update-patient/:id', component: EditPatientComponent, canActivate:[AuthGaurdService] },
+
+  { path: 'prescripteurs', component: ListPrescripteursComponent, canActivate:[AuthGaurdService] },
+  { path: 'add-prescripteur', component: EditPrescripteurComponent, canActivate:[AuthGaurdService] },
+  { path: 'update-prescripteur/:id', component: EditPrescripteurComponent, canActivate:[AuthGaurdService] },
 
   { path: 'utilisateurs', component: ListUtilisateursComponent, canActivate:[AuthGaurdService] },
   { path: 'add-utilisateur', component: EditUtilisateurComponent, canActivate:[AuthGaurdService] },

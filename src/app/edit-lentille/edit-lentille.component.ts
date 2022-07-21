@@ -12,6 +12,7 @@ import {CatalogueService} from "../services/catalogue.service";
 import {MontureModel} from "../models/monture.model";
 import {map, startWith} from "rxjs/operators";
 import {MarqueModel} from "../models/marque.model";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
   selector: 'app-edit-lentille',
@@ -23,17 +24,16 @@ export class EditLentilleComponent implements OnInit {
   isAddMode: boolean;
   lentilleForm: FormGroup;
   submitted = false;
-  loading = false;
   stock = new StockModel(null, null, null, null, new LentilleModel(null, null, null, null, null));
 
   catalogue : CatalogueModel = null;
   filteredCatalogue : Observable<CatalogueModel[]>;
   listCatalogues : CatalogueModel[]=[];
-  listCatalogueSubscription : Subscription;
   catalogueTriggerSubscription : Subscription;
   @ViewChild('autoCompleteCatalogue', { read: MatAutocompleteTrigger }) triggerCatalogue: MatAutocompleteTrigger;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private spinnerService: NgxSpinnerService,
+              private formBuilder: FormBuilder,
               private catalogueService :  CatalogueService,
               private stockService :  StockService,
               private lentilleService : LentilleService,
@@ -47,15 +47,14 @@ export class EditLentilleComponent implements OnInit {
     this.initForm(this.stock);
 
     if (!this.isAddMode) {
-      this.loading = true;
+      this.spinnerService.show();
       this.stockService.getStockById(this.stock.id).subscribe((response) => {
         this.stock = response;
+        this.spinnerService.hide();
         console.log(this.stock);
         if((this.stock.produit as LentilleModel).catalogue!=null){
           // @ts-ignore
           this.catalogue = this.stock.produit.catalogue;
-          // @ts-ignore
-          //this.factureForm.get('catalogue').setValue(this.catalogue);
         }
         this.initForm(this.stock);
           this.filteredCatalogue = this.lentilleForm.get('catalogue').valueChanges.pipe(
@@ -65,9 +64,9 @@ export class EditLentilleComponent implements OnInit {
           );
       },(error) => {
         console.log('Erreur ! : ' + error);
+        this.spinnerService.hide();
       }
       );
-      this.loading = false;
     }
     else {
       this.filteredCatalogue = this.lentilleForm.get('catalogue').valueChanges.pipe(
@@ -77,16 +76,13 @@ export class EditLentilleComponent implements OnInit {
       );
     }
 
-    this.listCatalogueSubscription = this.catalogueService.listCatalogueSubject.subscribe(data => {
+    this.catalogueService.getAllCatalogues().subscribe(data => {
       this.listCatalogues = data;
     }, error => {
       console.log('Error ! : ' + error);
     });
-    this.catalogueService.getAllCatalogues();
-
   }
   ngOnDestroy(): void {
-    this.listCatalogueSubscription.unsubscribe();
     this.catalogueTriggerSubscription.unsubscribe();
   }
   ngAfterViewInit() {
@@ -125,7 +121,7 @@ export class EditLentilleComponent implements OnInit {
       cylindre: [lentille.cylindre, Validators.compose([Validators.required])],
       axe: lentille.axe,
       addition: lentille.addition,
-      qte: [stock.qte, Validators.compose([Validators.required, Validators.min(0)])],
+      //qte: [stock.qte, Validators.compose([Validators.required, Validators.min(0)])],
       prixVente: [stock.prixVente, Validators.compose([Validators.required, Validators.min(0)])],
     });
   }
@@ -150,7 +146,7 @@ export class EditLentilleComponent implements OnInit {
     editedLentille.addition = <number> formValue['addition'];
     editedStock.produit = editedLentille;
     editedStock.prixVente = formValue['prixVente'];
-    editedStock.qte = formValue['qte'];
+    //editedStock.qte = formValue['qte'];
     if(this.catalogue!=null)
       editedLentille.catalogue = this.catalogue;
     else
@@ -163,19 +159,15 @@ export class EditLentilleComponent implements OnInit {
       this.updateLentille(editedStock);
     }
   }
-
   onReset() {
     this.submitted = false;
     this.lentilleForm.reset();
   }
-
-
   private addLentille(stock : StockModel) {
     this.lentilleService.addLentille(stock.produit as LentilleModel).subscribe(data1=>{
       stock.produit = data1 as LentilleModel;
       this.stockService.addStock(stock).subscribe(data2=>{
         console.log(data2);
-        this.loading = false;
         this.stockService.getAllStockLentille();
         this.router.navigate(['/lentilles']);
       }, error => {
@@ -183,17 +175,13 @@ export class EditLentilleComponent implements OnInit {
       });
     }, error => {
       console.log('Error ! : ' + error);
-      this.loading = false;
     });
-
   }
-
   private updateLentille(stock : StockModel) {
     this.lentilleService.updateLentille(stock.produit as LentilleModel).subscribe(data1=>{
       stock.produit = data1 as LentilleModel;
       this.stockService.updateStock(stock).subscribe(data2=>{
         console.log(data2);
-        this.loading = false;
         this.stockService.getAllStockLentille();
         this.router.navigate(['/lentilles']);
       }, error => {
@@ -201,7 +189,6 @@ export class EditLentilleComponent implements OnInit {
       });
     }, error => {
       console.log('Error ! : ' + error);
-      this.loading = false;
     });
 
   }

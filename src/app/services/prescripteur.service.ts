@@ -8,23 +8,16 @@ import {PrescripteurModel} from "../models/prescripteur.model";
 })
 export class PrescripteurService {
 
-  url = 'https://sky-optique-back2.herokuapp.com/prescripteur/';
-  // @ts-ignore
-  listPrescripteurs : PrescripteurModel[];
-  listPrescripteurSubject = new Subject<PrescripteurModel[]>();
-  emitListPrescripteurSubject(){
-    this.listPrescripteurSubject.next(this.listPrescripteurs);
-  }
+  url = 'http://localhost:8080/prescripteur/';
 
   constructor(private httpClient: HttpClient) { }
 
+  getAllPrescripteurSubject() {
+    return this.httpClient.get<PrescripteurModel[]>(this.url);
+  }
+
   getAllPrescripteurs() {
-    this.httpClient.get<PrescripteurModel[]>(this.url).subscribe(
-      (data: PrescripteurModel[]) => {
-        this.listPrescripteurs = data;
-        this.emitListPrescripteurSubject();
-      }
-    );
+    return this.httpClient.get<PrescripteurModel[]>(this.url);
   }
 
   getPrescripteurById(idPrescripteur : number) {
@@ -32,8 +25,8 @@ export class PrescripteurService {
   }
 
 
-  addPrescripteur(fournisseur : PrescripteurModel) {
-    return this.httpClient.post(this.url, fournisseur);
+  addPrescripteur(prescripteur : PrescripteurModel) {
+    return this.httpClient.post(this.url, prescripteur);
   }
 
   updatePrescripteur(prescripteur : PrescripteurModel) {

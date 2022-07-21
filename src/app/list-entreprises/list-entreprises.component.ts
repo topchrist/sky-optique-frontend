@@ -4,6 +4,7 @@ import {Subscription} from "rxjs";
 import {CompagniModel} from "../models/compagni.model";
 import {LentilleService} from "../services/lentille.service";
 import {CompagniService} from "../services/compagni.service";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
   selector: 'app-list-entreprises',
@@ -12,37 +13,31 @@ import {CompagniService} from "../services/compagni.service";
 })
 export class ListEntreprisesComponent implements OnInit {
 
-  loading = false;
   entreprises: CompagniModel[];
-  listEntrepriseSubscription : Subscription;
 
-  constructor(private compagniService : CompagniService) { }
+  constructor(private spinnerService: NgxSpinnerService, private compagniService : CompagniService) { }
 
   ngOnInit(): void {
-    this.loading = true;
-    this.listEntrepriseSubscription = this.compagniService.listCompagniSubject.subscribe(
+    this.spinnerService.show();
+    this.compagniService.getAllCompagnis().subscribe(
       (entreprises: CompagniModel[]) => {
         let listEntreprises = entreprises;
         this.entreprises = listEntreprises.filter(x => x.type == 'assurance');
-        this.loading = false;
+          this.spinnerService.hide();
       }
     );
-    this.compagniService.getAllCompagnis();
-  }
-
-  ngOnDestroy(): void {
-    this.listEntrepriseSubscription.unsubscribe();
   }
 
   deleteEntreprise(id: number) {
-    this.loading = true;
+    this.spinnerService.show();
     this.compagniService.deleteCompagni(id)
       .subscribe( data =>{
         console.log("ok deleting");
         this.compagniService.getAllCompagnis();
-      });
+          this.spinnerService.hide();
+    });
 
-    this.loading = false;
+
   }
 
 }
