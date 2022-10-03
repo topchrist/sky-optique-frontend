@@ -257,10 +257,12 @@
                     <mat-form-field appearance="outline">
                       <mat-label>Couverture Monture</mat-label>
                       <input type="number" matInput placeholder="Couverture Monture" formControlName="couvertureMonture" (change)="onCalculValeurs()">
+                      <mat-error *ngIf="couverture.get('couvertureMonture').invalid" >La valeur doit être comprise entre 0 et 100</mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline">
                       <mat-label>Couverture verre</mat-label>
                       <input type="number" matInput placeholder="Couverture verre" formControlName="couvertureVerre" (change)="onCalculValeurs()">
+                      <mat-error *ngIf="couverture.get('couvertureVerre').invalid" >La valeur doit être comprise entre 0 et 100</mat-error>
                     </mat-form-field>
                   </div>
                 </div>

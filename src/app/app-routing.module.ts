@@ -87,11 +87,12 @@ const routes: Routes = [
   { path: 'factures', component: ListFacturesComponent, canActivate:[AuthGaurdService] },
   { path: 'add-proforma', component: AddProformaComponent, canActivate:[AuthGaurdService] },
   { path: 'add-facture', component: AddFactureComponent, canActivate:[AuthGaurdService] },
+  { path: 'edit-facture/:id', component: AddFactureComponent, canActivate:[AuthGaurdService] },
   { path: 'update-facture/:id', component: UpdateFactureComponent, canActivate:[AuthGaurdService] },
   { path: 'Bordereaux', component: ListBordereauComponent, canActivate:[AuthGaurdService] },
   { path: 'add-bordereau', component: EditBordereauComponent, canActivate:[AuthGaurdService] },
 
-  { path: 'entreprises', component: ListEntreprisesComponent, canActivate:[AuthGaurdService] },
+  { path: 'entreprises/:type', component: ListEntreprisesComponent, canActivate:[AuthGaurdService] },
   { path: 'add-entreprise', component: EditEntrepriseComponent, canActivate:[AuthGaurdService] },
   { path: 'update-entreprise/:id', component: EditEntrepriseComponent, canActivate:[AuthGaurdService] },
 
@@ -119,7 +120,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: "reload", })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

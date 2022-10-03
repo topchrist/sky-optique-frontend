@@ -135,7 +135,7 @@ import {MatPaginatorModule} from "@angular/material/paginator";
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
+    [AppRoutingModule],
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,

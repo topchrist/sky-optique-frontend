@@ -99,10 +99,11 @@ export class EditEntrepriseComponent implements OnInit {
   }
 
   private updateEntreprise(entreprise : CompagniModel) {
-    entreprise.id = this.entreprise.id;
+    //entreprise.id = this.entreprise.id;
+    console.log(entreprise);
     this.compagniService.updateCompagni(entreprise).subscribe(data=>{
       console.log(data);
-      this.compagniService.getAllCompagnis();
+      //this.compagniService.getAllCompagnis();
       this.router.navigate(['/entreprises']);
     }, error => {
       console.log('Error ! : ' + error);

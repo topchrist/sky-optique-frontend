@@ -37,6 +37,7 @@ import {PatientModel} from "../models/patient.model";
 import {EditPrescripteurDialogComponent} from "../edit-prescripteur-dialog/edit-prescripteur-dialog.component";
 import {EditMontureDialogComponent} from "../edit-monture-dialog/edit-monture-dialog.component";
 import {EditLentilleDialogComponent} from "../edit-lentille-dialog/edit-lentille-dialog.component";
+import {ProformaModel} from "../models/Proforma.model";
 
 @Component({
   selector: 'app-add-facture',
@@ -99,6 +100,9 @@ export class AddFactureComponent implements OnInit {
 
   aPayer : number =0;
 
+  id : number;
+  proforma : ProformaModel = null;
+
   constructor(private spinnerService: NgxSpinnerService,
               private formBuilder: FormBuilder,
               private router: Router,
@@ -113,15 +117,17 @@ export class AddFactureComponent implements OnInit {
               private stockService : StockService,
               private lentilleService : LentilleService,
               public dialog: MatDialog,
-              ) { }
+              ) {
+    this.id = this.route.snapshot.params['id'];
+  }
 
   ngOnInit(): void {
-    this.initForm();
 
+    this.initForm();
     this.onAddCouverture();
     this.onAddPrescription();
-
     this.loadData();
+
   }
 
   loadData(){
@@ -129,6 +135,7 @@ export class AddFactureComponent implements OnInit {
 
     this.personneService.getAllPersonnes().subscribe(data1 => {
       let list : PersonneModel[] = data1;
+      console.log(data1);
       this.listPatients = list.filter(x => x.discriminator == "CLIENT");
       this.listAssurePrincipal = list.filter(x => x.discriminator != "PRESCRIPTEUR");
       this.listPrescripteurs = list.filter(x => x.discriminator == "PRESCRIPTEUR");
@@ -139,6 +146,9 @@ export class AddFactureComponent implements OnInit {
         this.stockService.getAllStockMonture().subscribe(data4 => {
           this.listMontures = data4;
           this.spinnerService.hide();
+          if (this.id) {
+            this.loadEditedFacture();
+          }
         }, error => {
           this.spinnerService.hide();
           console.log('Error ! : ' + error);
@@ -196,6 +206,53 @@ export class AddFactureComponent implements OnInit {
     }, error => {
       this.spinnerService.hide();
       console.log('Error ! : ' + error);
+    });
+  }
+  loadEditedFacture(){
+    this.spinnerService.show();
+    this.proformaService.getProformaById(this.id).subscribe((response) => {
+      this.proforma = response;
+      this.spinnerService.hide();
+      this.patient = this.proforma.patient;
+      this.factureForm.get('nomPatient').setValue(this.patient);
+      if(this.proforma.prescription){
+        this.prescripteur = this.proforma.prescription.prescripteur;
+        this.prescription.at(0).get('nomPrescripteur').setValue(this.prescripteur);
+        this.prescription.at(0).get('datePrescription').setValue(this.proforma.prescription.datePrescription);
+        this.prescription.at(0).get('dateLimite').setValue(this.proforma.prescription.deadline);
+        this.prescription.at(0).get('eyeVision').setValue(this.proforma.prescription.eyeVision);
+        this.prescription.at(0).get('port').setValue(this.proforma.prescription.port);
+      }
+      if(this.proforma.couvertures && this.proforma.couvertures.length > 0){
+        this.assurePrincipal = this.proforma.couvertures[0].assurePrincipal;
+        this.couverture.at(0).get('nomAssurePrincipal').setValue(this.assurePrincipal);
+        this.couverture.at(0).get('numeroDocument').setValue(this.proforma.couvertures[0].numeroDocument);
+        this.couverture.at(0).get('dateDocument').setValue(this.proforma.couvertures[0].dateDocument);
+        this.couverture.at(0).get('relation').setValue(this.proforma.couvertures[0].relation);
+        this.couverture.at(0).get('couvertureMonture').setValue(this.proforma.couvertures[0].couvertureMonture);
+        this.couverture.at(0).get('couvertureVerre').setValue(this.proforma.couvertures[0].couvertureVerre);
+        this.assurance = this.proforma.couvertures[0].assurance;
+        this.couverture.at(0).get('assurance').setValue(this.assurance);
+      }
+      this.proforma.ventes.forEach(x =>{
+        if(x.libelle == 'monture'){
+          this.monture = x.stock;
+          this.montureControl.setValue(this.monture);
+        }
+        else if(x.libelle == "lentilleD"){
+          this.lentilleD = x.stock;
+          this.lentilleDControl.setValue(this.lentilleD);
+        }
+        else if(x.libelle == "lentilleG"){
+          this.lentilleG = x.stock;
+          this.lentilleDControl.setValue(this.lentilleG);
+        }
+      });
+      this.onCalculValeurs();
+      console.log(this.proforma);
+    },(error) => {
+      console.log('Erreur ! : ' + error);
+      this.spinnerService.hide();
     });
   }
 

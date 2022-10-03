@@ -30,6 +30,8 @@
         <th>Numero</th>
         <th>Nom patient</th>
         <th>Prénom patient</th>
+        <th>Téléphone</th>
+        <th>Société</th>
         <th></th>
       </tr>
       </thead>
@@ -39,6 +41,8 @@
         <td>{{ facture.numero}}</td>
         <td>{{ facture.patient.nom }}</td>
         <td>{{ facture.patient.prenom }}</td>
+        <td>{{facture.patient.tel1}}</td>
+        <td>{{facture.patient.entreprise?.nom}}</td>
         <td>
           <a routerLink="../print-facture-client/{{facture.id}}" class="btn btn-sm btn-primary mr-1">Facture</a>
         </td>

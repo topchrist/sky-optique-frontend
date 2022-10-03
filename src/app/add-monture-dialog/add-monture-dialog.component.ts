@@ -10,6 +10,7 @@ import {StockService} from "../services/stock.service";
 import {MarqueService} from "../services/marque.service";
 import {map, startWith} from "rxjs/operators";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
   selector: 'app-add-monture-dialog',
@@ -32,7 +33,8 @@ export class AddMontureDialogComponent implements OnInit {
   marqueTriggerSubscription : Subscription;
   @ViewChild('autoCompleteMarque', { read: MatAutocompleteTrigger }) triggerMarque: MatAutocompleteTrigger;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private spinnerService: NgxSpinnerService,
+              private formBuilder: FormBuilder,
               private montureService :  MontureService,
               private stockService :  StockService,
               private marqueService : MarqueService,
@@ -42,10 +44,13 @@ export class AddMontureDialogComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
 
+    this.spinnerService.show();
     this.marqueService.getAllMarques().subscribe(data => {
       this.listMarques = data;
+      this.spinnerService.hide();
     }, error => {
       console.log('Error ! : ' + error);
+      this.spinnerService.hide();
     });
     this.marqueService.getAllMarques();
 
@@ -147,6 +152,16 @@ export class AddMontureDialogComponent implements OnInit {
   }
 
   private addMonture(stock : StockModel) {
+    this.spinnerService.show();
+    this.stockService.addStockMonture(stock).subscribe(data2=>{
+      console.log(data2);
+      this.dialogRef.close(data2);
+      this.spinnerService.hide();
+    }, error => {
+      console.log('Error ! : ' + error);
+      this.spinnerService.hide();
+    });
+    /*
     this.montureService.addMonture(stock.produit as MontureModel).subscribe(data1=>{
       stock.produit = data1 as MontureModel;
       this.stockService.addStock(stock).subscribe(data2=>{
@@ -159,7 +174,7 @@ export class AddMontureDialogComponent implements OnInit {
     }, error => {
       console.log('Error ! : ' + error);
       this.loading = false;
-    });
+    });*/
 
   }
 

@@ -28,8 +28,8 @@ export class AuthentificationService {
   }
 
   authenticate(utilisateur : UtilisateurModel) {
-    return this.httpClient
-      .post(this.url+'login', utilisateur);
+    console.log(this.url+'login');
+    return this.httpClient.post(this.url+'login', utilisateur);
   }
 
   isUserLoggedIn() {

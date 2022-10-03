@@ -44,6 +44,8 @@
         <th>Numero</th>
         <th>Nom patient</th>
         <th>Prénom patient</th>
+        <th>Téléphone</th>
+        <th>Société</th>
         <th></th>
       </tr>
       </thead>
@@ -53,9 +55,12 @@
         <td>{{ facture.numero}}</td>
         <td>{{ facture.patient.nom }}</td>
         <td>{{ facture.patient.prenom }}</td>
+        <td>{{facture.patient.tel1}}</td>
+        <td>{{facture.patient.entreprise?.nom}}</td>
         <td>
-          <a routerLink="../print-proforma/{{facture.id}}" class="btn btn-sm btn-primary mr-1">Imprimer Facture</a>
-          <button (click)="onSaveFactureClient(facture.id)" class="btn btn-sm btn-danger" >Enregistrer Facture Client</button>
+          <a routerLink="../print-proforma/{{facture.id}}" class="btn btn-sm btn-primary mr-1" style="margin-right: 3px">Imprimer</a>
+          <a routerLink="../edit-facture/{{facture.id}}" class="btn btn-sm btn-primary mr-1">Editer la facture</a>
+          <!--<button (click)="onSaveFactureClient(facture.id)" class="btn btn-sm btn-danger" >Imprimer facture client</button>-->
         </td>
       </tr>
       </tbody>

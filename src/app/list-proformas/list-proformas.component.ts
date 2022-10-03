@@ -151,16 +151,20 @@ export class ListProformasComponent implements OnInit {
     console.log(facture);
 
     this.factureClientService.addFactureClient(facture).subscribe(
-      data =>{
-        console.log(data);
-        // @ts-ignore
-        this.router.navigate(['/print-facture-client/'+data.id]);
-      }, error => {
-        console.log('Error ! : ' + error);
-        //this.loading = false;
-      }
+        data =>{
+          console.log(data);
+          // @ts-ignore
+          this.router.navigate(['/print-facture-client/'+data.id]);
+        }, error => {
+          console.log('Error ! : ' + error);
+          //this.loading = false;
+        }
     );
 
+  }
+
+  onEditFactureClient(id: number) {
+    this.router.navigate(['/edit-facture/'+id]);
   }
 
   getAllProformas(request){

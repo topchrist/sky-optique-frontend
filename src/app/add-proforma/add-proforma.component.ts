@@ -132,6 +132,8 @@ export class AddProformaComponent implements OnInit {
     this.personneService.getAllPersonnes().subscribe(data1 => {
       let list : PersonneModel[] = data1;
       this.listPatients = list.filter(x => x.discriminator == "CLIENT");
+      console.log(data1);
+      console.log(this.listPatients);
       this.listAssurePrincipal = list.filter(x => x.discriminator != "PRESCRIPTEUR");
       this.listPrescripteurs = list.filter(x => x.discriminator == "PRESCRIPTEUR");
       this.compagniService.getAllCompagnis().subscribe(data2 => {

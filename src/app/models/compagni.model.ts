@@ -7,6 +7,7 @@ export class CompagniModel extends EntiteModel{
     public type?: string,
     public discriminator?: string,
     public rccm?: string,
+    public niu?: string,
     public id?:number,
   ) {
     super(null);
