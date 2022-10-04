@@ -9,6 +9,7 @@ import {BordereauModel} from "../models/bordereau.model";
 import {BordereauService} from "../services/bordereau.service";
 import {LentilleService} from "../services/lentille.service";
 import {Router} from "@angular/router";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Component({
   selector: 'app-edit-bordereau',
@@ -17,7 +18,6 @@ import {Router} from "@angular/router";
 })
 export class EditBordereauComponent implements OnInit {
 
-  loading = false;
   factures: FactureClientModel[];
   filtredFactures: FactureClientModel[];
   selectedFactures: FactureClientModel[];
@@ -27,49 +27,45 @@ export class EditBordereauComponent implements OnInit {
 
   idAssurance = null;
   listAssurances : CompagniModel[]=[];
-  listEntreprisesSubscription : Subscription;
 
   isSelected =false;
 
-  constructor(private factureClientService : FactureClientService,
+  constructor(private spinnerService: NgxSpinnerService,
+              private factureClientService : FactureClientService,
               private compagniService : CompagniService,
               private bordereauService : BordereauService,
               private router: Router) { }
 
   ngOnInit(): void {
-    this.loading = true;
+    this.spinnerService.show();
 
-    this.listEntreprisesSubscription = this.compagniService.listCompagniSubject.subscribe(
-      data => {
-        this.listAssurances = (data as CompagniModel[]).filter(entr => entr.type == "assurance");
-      }, error => {
-        console.log('Error ! : ' + error);
-      }
-    );
-    this.compagniService.getAllCompagnis();
-
-    this.factureClientService.getAllFactureClientsWithoutBordereau().subscribe(
-      (data: FactureClientModel[]) => {
+    this.compagniService.getAllCompagnis().subscribe(data => {
+      this.listAssurances = (data as CompagniModel[]).filter(entr => entr.type == "assurance");
+      this.factureClientService.getAllFactureClientsWithoutBordereau().subscribe((data: FactureClientModel[]) => {
         this.factures = data;
         this.filtredFactures = [];
-        this.loading = false;
-      }
-    );
-  }
-  ngOnDestroy(): void {
-    //this.listFactureSubscription.unsubscribe();
-    this.listEntreprisesSubscription.unsubscribe();
+        this.spinnerService.hide();
+      }, error => {
+        console.log('Error ! : ' + error);
+        this.spinnerService.hide();
+      });
+    }, error => {
+      console.log('Error ! : ' + error);
+      this.spinnerService.hide();
+    });
+
   }
 
   onRemoveFacture(id: number) {
-    this.loading = true;
-    this.factureClientService.deleteFactureClient(id)
-      .subscribe( data =>{
+    this.spinnerService.show();
+    this.factureClientService.deleteFactureClient(id).subscribe( data =>{
         console.log("ok deleting");
-        this.factureClientService.getAllFactureClients();
-      });
-
-    this.loading = false;
+        this.spinnerService.hide();
+        //this.factureClientService.getAllFactureClients();
+      }, error =>{
+      console.log('Error ! : ' + error);
+      this.spinnerService.hide();
+    });
   }
 
   onFIlterListe() {
@@ -130,6 +126,7 @@ export class EditBordereauComponent implements OnInit {
   }
 
   onSubmit(bordereauForm: any) {
+    this.spinnerService.show();
     let fin = new Date(this.dateFin);
     fin.setHours(23, 59, 59);
     let bordereau = new BordereauModel(this.dateDebut, fin, this.filtredFactures.filter( x => x.checked));
@@ -137,8 +134,12 @@ export class EditBordereauComponent implements OnInit {
     console.log(bordereau);
     this.bordereauService.addBordereau(bordereau).subscribe(data =>{
       console.log(data);
+      this.spinnerService.hide();
       // @ts-ignore
       this.router.navigate(['/print-bordereau/'+data.id]);
+    }, error => {
+      this.spinnerService.hide();
+      console.log('error : '+error);
     })
   }
 }
